@@ -1,0 +1,14 @@
+
+!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Tracker</title>
+</head>
+<body>
+    <script>
+    fetch('https://api.countapi.xyz/hit/loewen-br/bewerber')
+      .catch(err => console.log(err));
+    </script>
+</body>
+</html>
