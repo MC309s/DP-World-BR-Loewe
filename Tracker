@@ -1,14 +1,34 @@
-
-!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>Tracker</title>
 </head>
 <body>
-    <script>
-    fetch('https://api.countapi.xyz/hit/loewen-br/bewerber')
-      .catch(err => console.log(err));
-    </script>
+<script>
+/* 
+   Eine einzige Tracker-Datei,
+   die mehrere Seiten tracken kann.
+*/
+
+// URL-Parameter auslesen, z.B. ?page=index oder ?page=bewerber
+const params = new URLSearchParams(window.location.search);
+const page = params.get("page") || "unknown"; // falls Fehler
+
+// Namespace: DU kannst den Namen behalten
+const NAMESPACE = "loewen-br";
+
+// Key dynamisch erstellen:
+const KEY = `visit_${page}`;
+
+// Besucher speichern
+fetch(`https://api.countapi.xyz/hit/${NAMESPACE}/${KEY}`)
+  .catch(err => console.log("Tracker Fehler:", err));
+
+// Optional: letzter Besuch pro Seite aufzeichnen
+fetch(`https://api.countapi.xyz/set/${NAMESPACE}/last_${page}?value=${Date.now()}`)
+  .catch(err => console.log(err));
+
+</script>
 </body>
 </html>
