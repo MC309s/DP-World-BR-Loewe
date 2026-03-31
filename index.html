@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste LÖWEN – Neuer Wind für den Betriebsrat</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #0A2540;
+            --gold: #F2A900;
+            --gold-light: #F2A90022;
+            --white: #ffffff;
+            --gray-bg: #f4f5f7;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Source Sans 3', sans-serif;
+            background-color: var(--gray-bg);
+            color: var(--navy);
+        }
+
+        /* ── LANGUAGE SWITCHER ── */
+        .lang-bar {
+            background-color: var(--navy);
+            padding: 8px 20px;
+            display: flex;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .lang-bar button {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.25);
+            color: #ccc;
+            font-size: 12px;
+            padding: 3px 10px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+        .lang-bar button:hover,
+        .lang-bar button.active {
+            background-color: var(--gold);
+            color: var(--navy);
+            border-color: var(--gold);
+            font-weight: 700;
+        }
+
+        /* ── HEADER ── */
+        header {
+            background-color: var(--navy);
+            color: white;
+            padding: 60px 20px 50px;
+            text-align: center;
+        }
+        header h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 56px;
+            letter-spacing: 3px;
+            color: var(--gold);
+        }
+        header p {
+            font-size: 22px;
+            opacity: 0.85;
+            margin-top: 8px;
+        }
+
+        /* ── NAV ── */
+        nav {
+            background-color: var(--gold);
+            padding: 14px 20px;
+            text-align: center;
+        }
+        nav a {
+            color: var(--navy);
+            margin: 0 12px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 15px;
+            letter-spacing: 0.4px;
+            transition: opacity 0.2s;
+        }
+        nav a:hover { opacity: 0.6; }
+
+        /* ── SECTIONS ── */
+        section {
+            padding: 50px 20px;
+            max-width: 900px;
+            margin: auto;
+        }
+
+        h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 32px;
+            letter-spacing: 1.5px;
+            color: var(--navy);
+            border-left: 7px solid var(--gold);
+            padding-left: 14px;
+            margin-bottom: 18px;
+        }
+
+        p {
+            font-size: 17px;
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+
+        .highlight {
+            background-color: var(--gold-light);
+            padding: 16px 20px;
+            border-left: 5px solid var(--gold);
+            border-radius: 4px;
+            margin: 20px 0;
+            font-size: 17px;
+            line-height: 1.6;
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            background-color: var(--navy);
+            color: rgba(255,255,255,0.6);
+            text-align: center;
+            padding: 22px;
+            margin-top: 40px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 580px) {
+            header h1 { font-size: 38px; }
+            nav a { font-size: 13px; margin: 0 7px; }
+            .lang-bar { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- LANGUAGE SWITCHER -->
+<div class="lang-bar">
+    <button class="active" onclick="setLang('de')">🇩🇪 Deutsch</button>
+    <button onclick="setLang('tr')">🇹🇷 Türkçe</button>
+    <button onclick="setLang('ru')">🇷🇺 Русский</button>
+    <button onclick="setLang('en')">🇬🇧 English</button>
+    <button onclick="setLang('uk')">🇺🇦 Українська</button>
+    <button onclick="setLang('ro')">🇷🇴 Română</button>
+    <button onclick="setLang('pl')">🇵🇱 Polski</button>
+    <button onclick="setLang('ar')">🇸🇦 العربية</button>
+    <button onclick="setLang('hr')">🇭🇷 Hrvatski</button>
+    <button onclick="setLang('bs')">🇧🇦 Bosanski</button>
+    <button onclick="setLang('sr')">🇷🇸 Srpski</button>
+    <button onclick="setLang('fa')">🇮🇷 فارسی</button>
+</div>
+
+<header>
+    <h1>🦁 LÖWEN</h1>
+    <p data-key="subtitle">Neuer Wind für den Betriebsrat</p>
+</header>
+
+<nav>
+    <a href="#wind" data-key="nav_wind">Neuer Wind</a>
+    <a href="#igmetall" data-key="nav_ig">IG Metall</a>
+    <a href="#transparenz" data-key="nav_trans">Transparenz</a>
+    <a href="#entgelt" data-key="nav_entgelt">Entgelt</a>
+    <a href="#betrieb" data-key="nav_betrieb">Im Betrieb</a>
+    <a href="bewerber.html" data-key="nav_bewerber">👥 Bewerber</a>
+</nav>
+
+<section id="wind">
+    <h2 data-key="s1_title">Neuer Wind für echte Betriebsratsarbeit</h2>
+    <p data-key="s1_text">Wir treten an, weil wir überzeugt sind, dass frische Ideen nötig sind, Entscheidungen transparenter werden müssen und Themen nicht einfach liegen bleiben dürfen. Die Interessen der Beschäftigten verdienen eine deutliche und starke Stimme.</p>
+    <div class="highlight" data-key="s1_highlight">Unser Anspruch: mehr Initiative, mehr Einsatz und mehr Präsenz im Alltag des Betriebsrats.</div>
+</section>
+
+<section id="igmetall">
+    <h2 data-key="s2_title">🤝 Zusammenarbeit mit der IG Metall – neu gedacht</h2>
+    <p><strong>1.</strong> <span data-key="s2_p1">Wir wollen die Zusammenarbeit mit der IG Metall wieder deutlich stärken.</span></p>
+    <p><strong>2.</strong> <span data-key="s2_p2">Wir möchten stärkere Unterstützung bei arbeitsrechtlichen Fragen, klare Ansprechpartner und mehr Durchsetzungskraft in Verhandlungen.</span></p>
+</section>
+
+<section id="transparenz">
+    <h2 data-key="s3_title">🔒 Schwerpunkt: Stabilität & Transparenz</h2>
+    <p data-key="s3_text">Wir setzen uns ein für nachvollziehbare Entscheidungen, offene Kommunikation und langfristige Perspektiven für alle Beschäftigten.</p>
+</section>
+
+<section id="entgelt">
+    <h2 data-key="s4_title">💶 Faire und klare Entgeltstrukturen</h2>
+    <p data-key="s4_text">Wir möchten Zuschläge, Samstagsarbeit und Überstunden neu beleuchten und konstruktiv ansprechen, um faire und transparente Strukturen zu fördern.</p>
+</section>
+
+<section id="betrieb">
+    <h2 data-key="s5_title">🧠 Wir kennen den Betrieb – von innen</h2>
+    <p data-key="s5_text">Wir arbeiten mitten im Alltag, stehen im direkten Austausch mit Kolleginnen und Kollegen und bringen praktische, statt theoretische Vorschläge ein.</p>
+</section>
+
+<section>
+    <h2 data-key="s6_title">🗳️ Zeit für echten Neustart</h2>
+    <p data-key="s6_text">Wir bringen neue Energie, neue Motivation und neue Perspektiven. Gemeinsam wollen wir zuhören, anpacken und etwas bewegen – nicht irgendwann, sondern jetzt.</p>
+    <div class="highlight" data-key="s6_highlight">👉 Wählt die Liste LÖWEN. Neuer Wind. Klar. Stark. Auf eurer Seite. 🦁</div>
+</section>
+
+<footer>© 2026 Liste LÖWEN – Betriebsratswahl</footer>
+
+<script>
+const translations = {
+    de: {
+        subtitle: "Neuer Wind für den Betriebsrat",
+        nav_wind: "Neuer Wind", nav_ig: "IG Metall", nav_trans: "Transparenz",
+        nav_entgelt: "Entgelt", nav_betrieb: "Im Betrieb", nav_bewerber: "👥 Bewerber",
+        s1_title: "Neuer Wind für echte Betriebsratsarbeit",
+        s1_text: "Wir treten an, weil wir überzeugt sind, dass frische Ideen nötig sind, Entscheidungen transparenter werden müssen und Themen nicht einfach liegen bleiben dürfen. Die Interessen der Beschäftigten verdienen eine deutliche und starke Stimme.",
+        s1_highlight: "Unser Anspruch: mehr Initiative, mehr Einsatz und mehr Präsenz im Alltag des Betriebsrats.",
+        s2_title: "🤝 Zusammenarbeit mit der IG Metall – neu gedacht",
+        s2_p1: "Wir wollen die Zusammenarbeit mit der IG Metall wieder deutlich stärken.",
+        s2_p2: "Wir möchten stärkere Unterstützung bei arbeitsrechtlichen Fragen, klare Ansprechpartner und mehr Durchsetzungskraft in Verhandlungen.",
+        s3_title: "🔒 Schwerpunkt: Stabilität & Transparenz",
+        s3_text: "Wir setzen uns ein für nachvollziehbare Entscheidungen, offene Kommunikation und langfristige Perspektiven für alle Beschäftigten.",
+        s4_title: "💶 Faire und klare Entgeltstrukturen",
+        s4_text: "Wir möchten Zuschläge, Samstagsarbeit und Überstunden neu beleuchten und konstruktiv ansprechen, um faire und transparente Strukturen zu fördern.",
+        s5_title: "🧠 Wir kennen den Betrieb – von innen",
+        s5_text: "Wir arbeiten mitten im Alltag, stehen im direkten Austausch mit Kolleginnen und Kollegen und bringen praktische, statt theoretische Vorschläge ein.",
+        s6_title: "🗳️ Zeit für echten Neustart",
+        s6_text: "Wir bringen neue Energie, neue Motivation und neue Perspektiven. Gemeinsam wollen wir zuhören, anpacken und etwas bewegen – nicht irgendwann, sondern jetzt.",
+        s6_highlight: "👉 Wählt die Liste LÖWEN. Neuer Wind. Klar. Stark. Auf eurer Seite. 🦁"
+    },
+    tr: {
+        subtitle: "İşçi Konseyi için Taze Bir Soluk",
+        nav_wind: "Taze Soluk", nav_ig: "IG Metall", nav_trans: "Şeffaflık",
+        nav_entgelt: "Ücret", nav_betrieb: "İşyerinde", nav_bewerber: "👥 Adaylar",
+        s1_title: "Gerçek İşçi Konseyi Çalışması için Taze Bir Soluk",
+        s1_text: "Taze fikirlerin gerekli olduğuna, kararların daha şeffaf olması gerektiğine ve konuların askıda bırakılmaması gerektiğine inandığımız için adayız. Çalışanların çıkarları güçlü ve net bir ses hak ediyor.",
+        s1_highlight: "Hedefimiz: daha fazla inisiyatif, daha fazla çaba ve günlük İşçi Konseyi çalışmasında daha fazla varlık.",
+        s2_title: "🤝 IG Metall ile İşbirliği – Yeniden Düşünüldü",
+        s2_p1: "IG Metall ile işbirliğini önemli ölçüde güçlendirmek istiyoruz.",
+        s2_p2: "İş hukuku konularında daha güçlü destek, net muhataplar ve müzakerelerde daha fazla güç istiyoruz.",
+        s3_title: "🔒 Odak Noktası: İstikrar & Şeffaflık",
+        s3_text: "Anlaşılabilir kararlar, açık iletişim ve tüm çalışanlar için uzun vadeli perspektifler için mücadele ediyoruz.",
+        s4_title: "💶 Adil ve Net Ücret Yapıları",
+        s4_text: "Adil ve şeffaf yapıları teşvik etmek için ek ödemeleri, Cumartesi çalışmasını ve fazla mesaileri yeniden ele almak istiyoruz.",
+        s5_title: "🧠 İşyerini Tanıyoruz – İçeriden",
+        s5_text: "Günlük hayatın ortasında çalışıyor, meslektaşlarımızla doğrudan iletişim halinde bulunuyor ve teorik değil pratik öneriler sunuyoruz.",
+        s6_title: "🗳️ Gerçek Bir Yeni Başlangıç Zamanı",
+        s6_text: "Yeni enerji, yeni motivasyon ve yeni bakış açıları getiriyoruz. Birlikte dinlemek, harekete geçmek ve bir şeyleri değiştirmek istiyoruz – sonunda değil, şimdi.",
+        s6_highlight: "👉 LÖWEN Listesini Seçin. Taze Soluk. Net. Güçlü. Sizin Yanınızda. 🦁"
+    },
+    ru: {
+        subtitle: "Новый ветер для производственного совета",
+        nav_wind: "Новый ветер", nav_ig: "IG Metall", nav_trans: "Прозрачность",
+        nav_entgelt: "Зарплата", nav_betrieb: "На производстве", nav_bewerber: "👥 Кандидаты",
+        s1_title: "Новый ветер для настоящей работы производственного совета",
+        s1_text: "Мы выдвигаемся, потому что убеждены: нужны свежие идеи, решения должны быть прозрачнее, а темы не должны оставаться без внимания. Интересы сотрудников заслуживают ясного и сильного голоса.",
+        s1_highlight: "Наша цель: больше инициативы, больше усилий и больше присутствия в повседневной работе совета.",
+        s2_title: "🤝 Сотрудничество с IG Metall – по-новому",
+        s2_p1: "Мы хотим значительно укрепить сотрудничество с IG Metall.",
+        s2_p2: "Мы хотим более сильной поддержки по трудовым вопросам, чётких контактных лиц и большей силы на переговорах.",
+        s3_title: "🔒 Приоритет: Стабильность & Прозрачность",
+        s3_text: "Мы выступаем за понятные решения, открытую коммуникацию и долгосрочные перспективы для всех сотрудников.",
+        s4_title: "💶 Справедливые и ясные структуры оплаты",
+        s4_text: "Мы хотим пересмотреть надбавки, работу по субботам и сверхурочные, чтобы способствовать справедливым и прозрачным структурам.",
+        s5_title: "🧠 Мы знаем производство – изнутри",
+        s5_text: "Мы работаем в самой гуще повседневной жизни, находимся в прямом контакте с коллегами и вносим практические, а не теоретические предложения.",
+        s6_title: "🗳️ Время для настоящего нового начала",
+        s6_text: "Мы приносим новую энергию, новую мотивацию и новые перспективы. Вместе мы хотим слушать, действовать и менять ситуацию – не когда-нибудь, а сейчас.",
+        s6_highlight: "👉 Голосуйте за список LÖWEN. Новый ветер. Ясно. Сильно. На вашей стороне. 🦁"
+    },
+    en: {
+        subtitle: "Fresh Wind for the Works Council",
+        nav_wind: "Fresh Wind", nav_ig: "IG Metall", nav_trans: "Transparency",
+        nav_entgelt: "Pay", nav_betrieb: "At Work", nav_bewerber: "👥 Candidates",
+        s1_title: "Fresh Wind for Real Works Council Action",
+        s1_text: "We're running because we believe fresh ideas are needed, decisions must become more transparent, and issues can't just be left unresolved. The interests of employees deserve a clear and powerful voice.",
+        s1_highlight: "Our goal: more initiative, more effort, and more presence in the daily work of the council.",
+        s2_title: "🤝 Cooperation with IG Metall – Rethought",
+        s2_p1: "We want to significantly strengthen cooperation with IG Metall.",
+        s2_p2: "We want stronger support on employment law issues, clear contact persons, and more clout in negotiations.",
+        s3_title: "🔒 Focus: Stability & Transparency",
+        s3_text: "We advocate for comprehensible decisions, open communication and long-term perspectives for all employees.",
+        s4_title: "💶 Fair and Clear Pay Structures",
+        s4_text: "We want to take a fresh look at bonuses, Saturday work and overtime to promote fair and transparent structures.",
+        s5_title: "🧠 We Know the Workplace – From the Inside",
+        s5_text: "We work in the thick of everyday life, are in direct exchange with colleagues, and bring practical rather than theoretical proposals.",
+        s6_title: "🗳️ Time for a Real Fresh Start",
+        s6_text: "We bring new energy, new motivation and new perspectives. Together we want to listen, get things done and make a difference – not someday, but now.",
+        s6_highlight: "👉 Vote for Liste LÖWEN. Fresh Wind. Clear. Strong. On your side. 🦁"
+    },
+    uk: {
+        subtitle: "Новий вітер для виробничої ради",
+        nav_wind: "Новий вітер", nav_ig: "IG Metall", nav_trans: "Прозорість",
+        nav_entgelt: "Зарплата", nav_betrieb: "На виробництві", nav_bewerber: "👥 Кандидати",
+        s1_title: "Новий вітер для справжньої роботи виробничої ради",
+        s1_text: "Ми балотуємося, бо переконані: потрібні свіжі ідеї, рішення мають бути прозорішими, а теми не можна просто залишати без уваги. Інтереси працівників заслуговують на чіткий і сильний голос.",
+        s1_highlight: "Наша мета: більше ініціативи, більше зусиль і більше присутності у щоденній роботі ради.",
+        s2_title: "🤝 Співпраця з IG Metall – по-новому",
+        s2_p1: "Ми хочемо значно зміцнити співпрацю з IG Metall.",
+        s2_p2: "Ми хочемо більшої підтримки з питань трудового права, чітких контактних осіб та більшої сили на переговорах.",
+        s3_title: "🔒 Пріоритет: Стабільність & Прозорість",
+        s3_text: "Ми виступаємо за зрозумілі рішення, відкриту комунікацію та довгострокові перспективи для всіх працівників.",
+        s4_title: "💶 Справедливі та чіткі структури оплати",
+        s4_text: "Ми хочемо переглянути надбавки, роботу в суботу та понаднормові, щоб сприяти справедливим і прозорим структурам.",
+        s5_title: "🧠 Ми знаємо виробництво – зсередини",
+        s5_text: "Ми працюємо у гущі повсякдення, перебуваємо у прямому контакті з колегами та вносимо практичні, а не теоретичні пропозиції.",
+        s6_title: "🗳️ Час для справжнього нового початку",
+        s6_text: "Ми приносимо нову енергію, нову мотивацію та нові перспективи. Разом ми хочемо слухати, діяти і щось змінити – не колись, а зараз.",
+        s6_highlight: "👉 Голосуйте за список LÖWEN. Новий вітер. Чітко. Сильно. На вашому боці. 🦁"
+    },
+    ro: {
+        subtitle: "Vânt nou pentru Consiliul de Producție",
+        nav_wind: "Vânt Nou", nav_ig: "IG Metall", nav_trans: "Transparență",
+        nav_entgelt: "Salariu", nav_betrieb: "La Locul de Muncă", nav_bewerber: "👥 Candidați",
+        s1_title: "Vânt nou pentru activitate reală în Consiliul de Producție",
+        s1_text: "Candidăm pentru că suntem convinși că sunt necesare idei proaspete, deciziile trebuie să devină mai transparente și subiectele nu pot fi lăsate nerezolvate. Interesele angajaților merită o voce clară și puternică.",
+        s1_highlight: "Obiectivul nostru: mai multă inițiativă, mai mult efort și mai multă prezență în activitatea zilnică a consiliului.",
+        s2_title: "🤝 Colaborarea cu IG Metall – regândită",
+        s2_p1: "Dorim să consolidăm semnificativ colaborarea cu IG Metall.",
+        s2_p2: "Dorim sprijin mai puternic în probleme de dreptul muncii, persoane de contact clare și mai multă forță în negocieri.",
+        s3_title: "🔒 Prioritate: Stabilitate & Transparență",
+        s3_text: "Pledăm pentru decizii clare, comunicare deschisă și perspective pe termen lung pentru toți angajații.",
+        s4_title: "💶 Structuri salariale corecte și clare",
+        s4_text: "Dorim să reexaminăm sporurile, munca de sâmbătă și orele suplimentare pentru a promova structuri corecte și transparente.",
+        s5_title: "🧠 Cunoaștem locul de muncă – din interior",
+        s5_text: "Lucrăm în mijlocul vieții de zi cu zi, suntem în contact direct cu colegii și aducem propuneri practice, nu teoretice.",
+        s6_title: "🗳️ Timp pentru un nou început real",
+        s6_text: "Aducem energie nouă, motivație nouă și perspective noi. Împreună vrem să ascultăm, să acționăm și să schimbăm ceva – nu cândva, ci acum.",
+        s6_highlight: "👉 Votați Lista LÖWEN. Vânt nou. Clar. Puternic. De partea voastră. 🦁"
+    },
+    pl: {
+        subtitle: "Nowy wiatr dla rady zakładowej",
+        nav_wind: "Nowy wiatr", nav_ig: "IG Metall", nav_trans: "Przejrzystość",
+        nav_entgelt: "Wynagrodzenie", nav_betrieb: "W zakładzie", nav_bewerber: "👥 Kandydaci",
+        s1_title: "Nowy wiatr dla prawdziwej pracy rady zakładowej",
+        s1_text: "Kandydujemy, bo jesteśmy przekonani, że potrzebne są świeże pomysły, decyzje muszą być bardziej przejrzyste, a tematy nie mogą być odkładane. Interesy pracowników zasługują na wyraźny i silny głos.",
+        s1_highlight: "Nasz cel: więcej inicjatywy, więcej zaangażowania i większa obecność w codziennej pracy rady.",
+        s2_title: "🤝 Współpraca z IG Metall – na nowo przemyślana",
+        s2_p1: "Chcemy znacznie wzmocnić współpracę z IG Metall.",
+        s2_p2: "Chcemy silniejszego wsparcia w kwestiach prawa pracy, jasnych osób kontaktowych i większej siły w negocjacjach.",
+        s3_title: "🔒 Priorytet: Stabilność & Przejrzystość",
+        s3_text: "Opowiadamy się za zrozumiałymi decyzjami, otwartą komunikacją i długoterminowymi perspektywami dla wszystkich pracowników.",
+        s4_title: "💶 Sprawiedliwe i przejrzyste struktury wynagrodzeń",
+        s4_text: "Chcemy na nowo przyjrzeć się dodatkom, pracy w soboty i nadgodzinom, aby promować sprawiedliwe i przejrzyste struktury.",
+        s5_title: "🧠 Znamy zakład – od środka",
+        s5_text: "Pracujemy w samym środku codzienności, jesteśmy w bezpośrednim kontakcie z koleżankami i kolegami i wnosimy praktyczne, a nie teoretyczne propozycje.",
+        s6_title: "🗳️ Czas na prawdziwy nowy start",
+        s6_text: "Przynosimy nową energię, nową motywację i nowe perspektywy. Razem chcemy słuchać, działać i coś zmienić – nie kiedyś, ale teraz.",
+        s6_highlight: "👉 Głosujcie na Listę LÖWEN. Nowy wiatr. Jasno. Mocno. Po waszej stronie. 🦁"
+    },
+    ar: {
+        subtitle: "رياح جديدة لمجلس العمال",
+        nav_wind: "رياح جديدة", nav_ig: "IG Metall", nav_trans: "الشفافية",
+        nav_entgelt: "الأجر", nav_betrieb: "في العمل", nav_bewerber: "👥 المرشحون",
+        s1_title: "رياح جديدة لعمل حقيقي في مجلس العمال",
+        s1_text: "نترشح لأننا مقتنعون بضرورة أفكار جديدة، وأن القرارات يجب أن تكون أكثر شفافية، ولا يمكن ترك المواضيع دون معالجة. مصالح الموظفين تستحق صوتاً واضحاً وقوياً.",
+        s1_highlight: "هدفنا: مزيد من المبادرة، ومزيد من الجهد، وحضور أكبر في العمل اليومي للمجلس.",
+        s2_title: "🤝 التعاون مع IG Metall – بمنظور جديد",
+        s2_p1: "نريد تعزيز التعاون مع IG Metall بشكل ملحوظ.",
+        s2_p2: "نريد دعماً أقوى في قضايا قانون العمل، وجهات اتصال واضحة، وقوة أكبر في المفاوضات.",
+        s3_title: "🔒 الأولوية: الاستقرار والشفافية",
+        s3_text: "ندافع عن قرارات مفهومة وتواصل مفتوح وآفاق طويلة الأمد لجميع الموظفين.",
+        s4_title: "💶 هياكل أجور عادلة وواضحة",
+        s4_text: "نريد إعادة النظر في العلاوات والعمل يوم السبت والعمل الإضافي لتعزيز هياكل عادلة وشفافة.",
+        s5_title: "🧠 نعرف مكان العمل – من الداخل",
+        s5_text: "نعمل في قلب الحياة اليومية، ونتواصل مباشرة مع الزملاء، ونقدم مقترحات عملية وليست نظرية.",
+        s6_title: "🗳️ وقت لبداية جديدة حقيقية",
+        s6_text: "نجلب طاقة جديدة ودوافع جديدة وآفاقاً جديدة. معاً نريد الاستماع والعمل والتغيير – ليس يوماً ما، بل الآن.",
+        s6_highlight: "👉 صوّتوا لقائمة LÖWEN. رياح جديدة. واضح. قوي. في صفكم. 🦁"
+    },
+    hr: {
+        subtitle: "Svježi vjetar za radničko vijeće",
+        nav_wind: "Svježi vjetar", nav_ig: "IG Metall", nav_trans: "Transparentnost",
+        nav_entgelt: "Plaća", nav_betrieb: "Na poslu", nav_bewerber: "👥 Kandidati",
+        s1_title: "Svježi vjetar za pravi rad radničkog vijeća",
+        s1_text: "Kandidiramo se jer smo uvjereni da su potrebne svježe ideje, odluke moraju biti transparentnije i teme se ne smiju ostavljati bez rješenja. Interesi zaposlenika zaslužuju jasan i snažan glas.",
+        s1_highlight: "Naš cilj: više inicijative, više angažmana i veća prisutnost u svakodnevnom radu vijeća.",
+        s2_title: "🤝 Suradnja s IG Metall – promišljena iznova",
+        s2_p1: "Želimo značajno ojačati suradnju s IG Metall.",
+        s2_p2: "Želimo jaču podršku u pitanjima radnog prava, jasne kontakt osobe i više snage u pregovorima.",
+        s3_title: "🔒 Prioritet: Stabilnost & Transparentnost",
+        s3_text: "Zalažemo se za razumljive odluke, otvorenu komunikaciju i dugoročne perspektive za sve zaposlenike.",
+        s4_title: "💶 Pravedne i jasne strukture plaća",
+        s4_text: "Želimo preispitati dodatke, rad subotom i prekovremeni rad kako bismo promicali pravedne i transparentne strukture.",
+        s5_title: "🧠 Poznajemo poduzeće – iznutra",
+        s5_text: "Radimo u samom srcu svakodnevice, u izravnom smo kontaktu s kolegicama i kolegama te donosimo praktične, a ne teorijske prijedloge.",
+        s6_title: "🗳️ Vrijeme za pravi novi početak",
+        s6_text: "Donosimo novu energiju, novu motivaciju i nove perspektive. Zajedno želimo slušati, djelovati i pokrenuti promjene – ne nekad, nego sada.",
+        s6_highlight: "👉 Glasajte za Listu LÖWEN. Svježi vjetar. Jasno. Snažno. Na vašoj strani. 🦁"
+    },
+    bs: {
+        subtitle: "Svjež vjetar za radničko vijeće",
+        nav_wind: "Svjež vjetar", nav_ig: "IG Metall", nav_trans: "Transparentnost",
+        nav_entgelt: "Plaća", nav_betrieb: "Na poslu", nav_bewerber: "👥 Kandidati",
+        s1_title: "Svjež vjetar za pravi rad radničkog vijeća",
+        s1_text: "Kandidiramo se jer smo uvjereni da su potrebne svježe ideje, odluke moraju biti transparentnije i teme se ne smiju ostavljati bez rješenja. Interesi zaposlenika zaslužuju jasan i snažan glas.",
+        s1_highlight: "Naš cilj: više inicijative, više angažmana i veća prisutnost u svakodnevnom radu vijeća.",
+        s2_title: "🤝 Saradnja s IG Metall – promišljena iznova",
+        s2_p1: "Želimo značajno ojačati saradnju s IG Metall.",
+        s2_p2: "Želimo jaču podršku u pitanjima radnog prava, jasne kontakt osobe i više snage u pregovorima.",
+        s3_title: "🔒 Prioritet: Stabilnost & Transparentnost",
+        s3_text: "Zalažemo se za razumljive odluke, otvorenu komunikaciju i dugoročne perspektive za sve zaposlenike.",
+        s4_title: "💶 Pravedne i jasne strukture plaća",
+        s4_text: "Želimo preispitati dodatke, rad subotom i prekovremeni rad kako bismo promovirali pravedne i transparentne strukture.",
+        s5_title: "🧠 Poznajemo preduzeće – iznutra",
+        s5_text: "Radimo u samom srcu svakodnevice, u direktnom smo kontaktu s kolegicama i kolegama te donosimo praktične, a ne teorijske prijedloge.",
+        s6_title: "🗳️ Vrijeme za pravi novi početak",
+        s6_text: "Donosimo novu energiju, novu motivaciju i nove perspektive. Zajedno želimo slušati, djelovati i pokrenuti promjene – ne nekad, nego sada.",
+        s6_highlight: "👉 Glasajte za Listu LÖWEN. Svjež vjetar. Jasno. Snažno. Na vašoj strani. 🦁"
+    },
+    sr: {
+        subtitle: "Свеж ветар за радничко веће",
+        nav_wind: "Свеж ветар", nav_ig: "IG Metall", nav_trans: "Транспарентност",
+        nav_entgelt: "Плата", nav_betrieb: "На послу", nav_bewerber: "👥 Кандидати",
+        s1_title: "Свеж ветар за прави рад радничког већа",
+        s1_text: "Кандидујемо се јер смо убеђени да су потребне свеже идеје, одлуке морају бити транспарентније и теме се не смеју остављати без решења. Интереси запослених заслужују јасан и снажан глас.",
+        s1_highlight: "Наш циљ: више иницијативе, више ангажмана и већа присутност у свакодневном раду већа.",
+        s2_title: "🤝 Сарадња с IG Metall – промишљена изнова",
+        s2_p1: "Желимо значајно ојачати сарадњу с IG Metall.",
+        s2_p2: "Желимо јачу подршку у питањима радног права, јасне контакт особе и више снаге у преговорима.",
+        s3_title: "🔒 Приоритет: Стабилност & Транспарентност",
+        s3_text: "Залажемо се за разумљиве одлуке, отворену комуникацију и дугорочне перспективе за све запослене.",
+        s4_title: "💶 Праведне и јасне структуре плата",
+        s4_text: "Желимо преиспитати додатке, рад суботом и прековремени рад како бисмо промовисали праведне и транспарентне структуре.",
+        s5_title: "🧠 Познајемо предузеће – изнутра",
+        s5_text: "Радимо у срцу свакодневице, у директном смо контакту с колегиницама и колегама и доносимо практичне, а не теоријске предлоге.",
+        s6_title: "🗳️ Време за прави нови почетак",
+        s6_text: "Доносимо нову енергију, нову мотивацију и нове перспективе. Заједно желимо слушати, деловати и покренути промене – не некад, него сада.",
+        s6_highlight: "👉 Гласајте за Листу LÖWEN. Свеж ветар. Јасно. Снажно. На вашој страни. 🦁"
+    },
+    fa: {
+        subtitle: "نسیم تازه برای شورای کارگری",
+        nav_wind: "نسیم تازه", nav_ig: "IG Metall", nav_trans: "شفافیت",
+        nav_entgelt: "حقوق", nav_betrieb: "در محل کار", nav_bewerber: "👥 کاندیداها",
+        s1_title: "نسیم تازه برای کار واقعی شورای کارگری",
+        s1_text: "کاندیدا می‌شویم چون معتقدیم ایده‌های تازه لازم است، تصمیمات باید شفاف‌تر شوند و موضوعات نباید بلاتکلیف بمانند. منافع کارمندان یک صدای واضح و قوی را می‌طلبد.",
+        s1_highlight: "هدف ما: ابتکار عمل بیشتر، تلاش بیشتر و حضور بیشتر در کار روزانه شورا.",
+        s2_title: "🤝 همکاری با IG Metall – با نگاهی تازه",
+        s2_p1: "می‌خواهیم همکاری با IG Metall را به‌طور قابل‌توجهی تقویت کنیم.",
+        s2_p2: "می‌خواهیم حمایت قوی‌تری در مسائل حقوق کار، افراد تماس مشخص و قدرت بیشتر در مذاکرات داشته باشیم.",
+        s3_title: "🔒 اولویت: ثبات و شفافیت",
+        s3_text: "از تصمیمات قابل‌فهم، ارتباط باز و چشم‌اندازهای بلندمدت برای همه کارمندان دفاع می‌کنیم.",
+        s4_title: "💶 ساختارهای حقوقی منصفانه و شفاف",
+        s4_text: "می‌خواهیم مزایا، کار روز شنبه و اضافه‌کاری را بازنگری کنیم تا ساختارهای منصفانه و شفاف را ترویج دهیم.",
+        s5_title: "🧠 ما محل کار را می‌شناسیم – از درون",
+        s5_text: "در قلب زندگی روزمره کار می‌کنیم، با همکاران در تماس مستقیم هستیم و پیشنهادات عملی نه نظری ارائه می‌دهیم.",
+        s6_title: "🗳️ وقت یک آغاز تازه واقعی",
+        s6_text: "انرژی جدید، انگیزه جدید و چشم‌اندازهای جدید می‌آوریم. با هم می‌خواهیم گوش دهیم، عمل کنیم و تغییر ایجاد کنیم – نه یک روز، بلکه همین حالا.",
+        s6_highlight: "👉 به لیست LÖWEN رأی دهید. نسیم تازه. واضح. قوی. در کنار شما. 🦁"
+    }
+};
+
+const langCodes = ['de','tr','ru','en','uk','ro','pl','ar','hr','bs','sr','fa'];
+
+function setLang(code) {
+    const t = translations[code] || translations['de'];
+    document.querySelectorAll('[data-key]').forEach(el => {
+        const key = el.getAttribute('data-key');
+        if (t[key] !== undefined) el.textContent = t[key];
+    });
+    document.querySelectorAll('.lang-bar button').forEach((btn, i) => {
+        btn.classList.toggle('active', langCodes[i] === code);
+    });
+    document.documentElement.lang = code;
+    document.documentElement.dir = ['ar','fa'].includes(code) ? 'rtl' : 'ltr';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bewerber – Liste LÖWEN</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #0A2540;
+            --gold: #F2A900;
+            --gold-light: #F2A90022;
+            --white: #ffffff;
+            --gray-bg: #f4f5f7;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Source Sans 3', sans-serif;
+            background-color: var(--gray-bg);
+            color: var(--navy);
+        }
+
+        /* ── LANGUAGE SWITCHER ── */
+        .lang-bar {
+            background-color: var(--navy);
+            padding: 8px 20px;
+            display: flex;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .lang-bar button {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.25);
+            color: #ccc;
+            font-size: 12px;
+            padding: 3px 10px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+        .lang-bar button:hover,
+        .lang-bar button.active {
+            background-color: var(--gold);
+            color: var(--navy);
+            border-color: var(--gold);
+            font-weight: 700;
+        }
+
+        /* ── HEADER ── */
+        header {
+            background-color: var(--navy);
+            color: white;
+            padding: 50px 20px 40px;
+            text-align: center;
+        }
+        header h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 52px;
+            letter-spacing: 3px;
+            color: var(--gold);
+        }
+        header p {
+            font-size: 20px;
+            opacity: 0.85;
+            margin-top: 6px;
+        }
+
+        /* ── NAV ── */
+        nav {
+            background-color: var(--gold);
+            padding: 14px 20px;
+            text-align: center;
+        }
+        nav a {
+            color: var(--navy);
+            margin: 0 14px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: 0.5px;
+            transition: opacity 0.2s;
+        }
+        nav a:hover { opacity: 0.6; }
+        nav a.active { border-bottom: 3px solid var(--navy); padding-bottom: 2px; }
+
+        /* ── CANDIDATES SECTION ── */
+        .candidates-section {
+            max-width: 860px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 38px;
+            letter-spacing: 2px;
+            color: var(--navy);
+            border-left: 8px solid var(--gold);
+            padding-left: 16px;
+            margin-bottom: 40px;
+        }
+
+        .candidate-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .candidate-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px 28px;
+            display: flex;
+            align-items: center;
+            gap: 22px;
+            box-shadow: 0 2px 12px rgba(10,37,64,0.08);
+            border-left: 6px solid var(--gold);
+            transition: transform 0.2s, box-shadow 0.2s;
+            animation: fadeUp 0.4s ease both;
+        }
+        .candidate-card:hover {
+            transform: translateX(6px);
+            box-shadow: 0 6px 24px rgba(10,37,64,0.15);
+        }
+
+        .candidate-number {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 36px;
+            color: var(--gold);
+            min-width: 48px;
+            text-align: center;
+            line-height: 1;
+        }
+
+        .candidate-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--navy);
+            letter-spacing: 0.3px;
+        }
+
+        .lion-icon {
+            margin-left: auto;
+            font-size: 24px;
+            opacity: 0.18;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(18px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .candidate-card:nth-child(1)  { animation-delay: 0.05s; }
+        .candidate-card:nth-child(2)  { animation-delay: 0.10s; }
+        .candidate-card:nth-child(3)  { animation-delay: 0.15s; }
+        .candidate-card:nth-child(4)  { animation-delay: 0.20s; }
+        .candidate-card:nth-child(5)  { animation-delay: 0.25s; }
+        .candidate-card:nth-child(6)  { animation-delay: 0.30s; }
+        .candidate-card:nth-child(7)  { animation-delay: 0.35s; }
+        .candidate-card:nth-child(8)  { animation-delay: 0.40s; }
+        .candidate-card:nth-child(9)  { animation-delay: 0.45s; }
+        .candidate-card:nth-child(10) { animation-delay: 0.50s; }
+        .candidate-card:nth-child(11) { animation-delay: 0.55s; }
+        .candidate-card:nth-child(12) { animation-delay: 0.60s; }
+
+        /* ── CALL TO ACTION ── */
+        .cta-box {
+            background-color: var(--navy);
+            color: white;
+            border-radius: 12px;
+            padding: 36px 32px;
+            text-align: center;
+            margin-top: 50px;
+        }
+        .cta-box h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 30px;
+            letter-spacing: 2px;
+            color: var(--gold);
+            margin-bottom: 10px;
+        }
+        .cta-box p {
+            font-size: 17px;
+            opacity: 0.88;
+            line-height: 1.6;
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            background-color: var(--navy);
+            color: rgba(255,255,255,0.6);
+            text-align: center;
+            padding: 22px;
+            margin-top: 60px;
+            font-size: 14px;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 540px) {
+            header h1 { font-size: 36px; }
+            nav a { font-size: 13px; margin: 0 8px; }
+            .candidate-name { font-size: 17px; }
+            .lang-bar { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- LANGUAGE SWITCHER -->
+<div class="lang-bar">
+    <button class="active" onclick="setLang('de')">🇩🇪 Deutsch</button>
+    <button onclick="setLang('tr')">🇹🇷 Türkçe</button>
+    <button onclick="setLang('ru')">🇷🇺 Русский</button>
+    <button onclick="setLang('en')">🇬🇧 English</button>
+    <button onclick="setLang('uk')">🇺🇦 Українська</button>
+    <button onclick="setLang('ro')">🇷🇴 Română</button>
+    <button onclick="setLang('pl')">🇵🇱 Polski</button>
+    <button onclick="setLang('ar')">🇸🇦 العربية</button>
+    <button onclick="setLang('hr')">🇭🇷 Hrvatski</button>
+    <button onclick="setLang('bs')">🇧🇦 Bosanski</button>
+    <button onclick="setLang('sr')">🇷🇸 Srpski</button>
+    <button onclick="setLang('fa')">🇮🇷 فارسی</button>
+</div>
+
+<header>
+    <h1>🦁 Liste LÖWEN</h1>
+    <p data-key="subtitle">Neuer Wind für den Betriebsrat</p>
+</header>
+
+<nav>
+    <a href="index.html" data-key="nav_home">🏠 Start</a>
+    <a href="index.html#wind" data-key="nav_wind">Neuer Wind</a>
+    <a href="index.html#igmetall" data-key="nav_ig">IG Metall</a>
+    <a href="index.html#transparenz" data-key="nav_trans">Transparenz</a>
+    <a href="index.html#entgelt" data-key="nav_entgelt">Entgelt</a>
+    <a href="index.html#betrieb" data-key="nav_betrieb">Im Betrieb</a>
+    <a href="bewerber.html" class="active" data-key="nav_bewerber">👥 Bewerber</a>
+</nav>
+
+<div class="candidates-section">
+    <h2 class="section-title" data-key="page_title">Unsere Kandidatinnen & Kandidaten</h2>
+
+    <div class="candidate-list">
+        <div class="candidate-card"><div class="candidate-number">01</div><div class="candidate-name">Atilla Okuyucu</div><div class="lion-icon">🦁</div></div>
+        <div class="candidate-card"><div class="candidate-number">02</div><div class="candidate-name">Muhammed Topal</div><div class="lion-icon">🦁</div></div>
+        <div class="candidate-card"><div class="candidate-number">03</div><div class="candidate-name">Gülay Ünsal</div><div class="lion-icon">🦁</div></div>
+        <div class="candidate-card"><div class="candidate-number">04</div><div class="candidate-name">Abd Abes</div><div class="lion-icon">🦁</div></div>
+        <div class="candidate-card"><div class="candidate-number">05</div><div class="candidate-name">Michaela Rother</div><div class="lion-icon">🦁</div></div>
+        <div class="candidate-card"><div class="candidate-number">06</div><div class="candidate-name">Yunus Olgun</div><div class="lion-icon">🦁</div></div>
+        <div class="candidate-card"><div class="candidate-number">07</div><div class="candidate-name">Jakub Tunczyk</div><div class="lion-icon">🦁</div></div>
+        <div class="candidate-card"><div class="candidate-number">08</div><div class="candidate-name">Mahmud Bezeyis</div><div class="lion-icon">🦁</div></div>
+        <div class="candidate-card"><div class="candidate-number">09</div><div class="candidate-name">Lejla Kadriji</div><div class="lion-icon">🦁</div></div>
+        <div class="candidate-card"><div class="candidate-number">10</div><div class="candidate-name">Marlon Schneider</div><div class="lion-icon">🦁</div></div>
+        <div class="candidate-card"><div class="candidate-number">11</div><div class="candidate-name">Robin Dreher</div><div class="lion-icon">🦁</div></div>
+        <div class="candidate-card"><div class="candidate-number">12</div><div class="candidate-name">Tilmunol Weldetense</div><div class="lion-icon">🦁</div></div>
+    </div>
+
+    <div class="cta-box">
+        <h3 data-key="cta_title">🗳️ Wählt die Liste LÖWEN!</h3>
+        <p data-key="cta_text">Klar. Stark. Auf eurer Seite. — Gemeinsam bewegen wir etwas. Jetzt.</p>
+    </div>
+</div>
+
+<footer>© 2026 Liste LÖWEN – Betriebsratswahl</footer>
+
+<script>
+const translations = {
+    de: {
+        subtitle: "Neuer Wind für den Betriebsrat",
+        nav_home: "🏠 Start",
+        nav_wind: "Neuer Wind",
+        nav_ig: "IG Metall",
+        nav_trans: "Transparenz",
+        nav_entgelt: "Entgelt",
+        nav_betrieb: "Im Betrieb",
+        nav_bewerber: "👥 Bewerber",
+        page_title: "Unsere Kandidatinnen & Kandidaten",
+        cta_title: "🗳️ Wählt die Liste LÖWEN!",
+        cta_text: "Klar. Stark. Auf eurer Seite. — Gemeinsam bewegen wir etwas. Jetzt."
+    },
+    tr: {
+        subtitle: "İşçi Konseyi için Taze Bir Soluk",
+        nav_home: "🏠 Ana Sayfa",
+        nav_wind: "Taze Soluk",
+        nav_ig: "IG Metall",
+        nav_trans: "Şeffaflık",
+        nav_entgelt: "Ücret",
+        nav_betrieb: "İşyerinde",
+        nav_bewerber: "👥 Adaylar",
+        page_title: "Adaylarımız",
+        cta_title: "🗳️ LÖWEN Listesini Seçin!",
+        cta_text: "Net. Güçlü. Sizin Yanınızda. — Birlikte bir şeyler değiştirelim. Şimdi."
+    },
+    ru: {
+        subtitle: "Новый ветер для производственного совета",
+        nav_home: "🏠 Главная",
+        nav_wind: "Новый ветер",
+        nav_ig: "IG Metall",
+        nav_trans: "Прозрачность",
+        nav_entgelt: "Зарплата",
+        nav_betrieb: "На производстве",
+        nav_bewerber: "👥 Кандидаты",
+        page_title: "Наши кандидаты",
+        cta_title: "🗳️ Голосуйте за список LÖWEN!",
+        cta_text: "Ясно. Сильно. На вашей стороне. — Вместе мы изменим ситуацию. Сейчас."
+    },
+    en: {
+        subtitle: "Fresh Wind for the Works Council",
+        nav_home: "🏠 Home",
+        nav_wind: "Fresh Wind",
+        nav_ig: "IG Metall",
+        nav_trans: "Transparency",
+        nav_entgelt: "Pay",
+        nav_betrieb: "At Work",
+        nav_bewerber: "👥 Candidates",
+        page_title: "Our Candidates",
+        cta_title: "🗳️ Vote for Liste LÖWEN!",
+        cta_text: "Clear. Strong. On your side. — Together we make a difference. Now."
+    },
+    uk: {
+        subtitle: "Новий вітер для виробничої ради",
+        nav_home: "🏠 Головна",
+        nav_wind: "Новий вітер",
+        nav_ig: "IG Metall",
+        nav_trans: "Прозорість",
+        nav_entgelt: "Зарплата",
+        nav_betrieb: "На виробництві",
+        nav_bewerber: "👥 Кандидати",
+        page_title: "Наші кандидати",
+        cta_title: "🗳️ Голосуйте за список LÖWEN!",
+        cta_text: "Чітко. Сильно. На вашому боці. — Разом ми щось змінимо. Зараз."
+    },
+    ro: {
+        subtitle: "Vânt nou pentru Consiliul de Producție",
+        nav_home: "🏠 Acasă",
+        nav_wind: "Vânt Nou",
+        nav_ig: "IG Metall",
+        nav_trans: "Transparență",
+        nav_entgelt: "Salariu",
+        nav_betrieb: "La Locul de Muncă",
+        nav_bewerber: "👥 Candidați",
+        page_title: "Candidații Noștri",
+        cta_title: "🗳️ Votați Lista LÖWEN!",
+        cta_text: "Clar. Puternic. De partea voastră. — Împreună schimbăm lucrurile. Acum."
+    },
+    pl: {
+        subtitle: "Nowy wiatr dla rady zakładowej",
+        nav_home: "🏠 Strona główna",
+        nav_wind: "Nowy wiatr",
+        nav_ig: "IG Metall",
+        nav_trans: "Przejrzystość",
+        nav_entgelt: "Wynagrodzenie",
+        nav_betrieb: "W zakładzie",
+        nav_bewerber: "👥 Kandydaci",
+        page_title: "Nasi Kandydaci",
+        cta_title: "🗳️ Głosujcie na Listę LÖWEN!",
+        cta_text: "Jasno. Mocno. Po waszej stronie. — Razem coś zmienimy. Teraz."
+    },
+    ar: {
+        subtitle: "رياح جديدة لمجلس العمال",
+        nav_home: "🏠 الرئيسية",
+        nav_wind: "رياح جديدة",
+        nav_ig: "IG Metall",
+        nav_trans: "الشفافية",
+        nav_entgelt: "الأجر",
+        nav_betrieb: "في العمل",
+        nav_bewerber: "👥 المرشحون",
+        page_title: "مرشحونا",
+        cta_title: "🗳️ صوّتوا لقائمة LÖWEN!",
+        cta_text: "واضح. قوي. في صفكم. — معاً نُحدث الفرق. الآن."
+    },
+    hr: {
+        subtitle: "Svježi vjetar za radničko vijeće",
+        nav_home: "🏠 Početna",
+        nav_wind: "Svježi vjetar",
+        nav_ig: "IG Metall",
+        nav_trans: "Transparentnost",
+        nav_entgelt: "Plaća",
+        nav_betrieb: "Na poslu",
+        nav_bewerber: "👥 Kandidati",
+        page_title: "Naši Kandidati",
+        cta_title: "🗳️ Glasajte za Listu LÖWEN!",
+        cta_text: "Jasno. Snažno. Na vašoj strani. — Zajedno mijenjamo stvari. Sada."
+    },
+    bs: {
+        subtitle: "Svjež vjetar za radničko vijeće",
+        nav_home: "🏠 Početna",
+        nav_wind: "Svjež vjetar",
+        nav_ig: "IG Metall",
+        nav_trans: "Transparentnost",
+        nav_entgelt: "Plaća",
+        nav_betrieb: "Na poslu",
+        nav_bewerber: "👥 Kandidati",
+        page_title: "Naši Kandidati",
+        cta_title: "🗳️ Glasajte za Listu LÖWEN!",
+        cta_text: "Jasno. Snažno. Na vašoj strani. — Zajedno mijenjamo stvari. Sada."
+    },
+    sr: {
+        subtitle: "Свеж ветар за радничко веће",
+        nav_home: "🏠 Почетна",
+        nav_wind: "Свеж ветар",
+        nav_ig: "IG Metall",
+        nav_trans: "Транспарентност",
+        nav_entgelt: "Плата",
+        nav_betrieb: "На послу",
+        nav_bewerber: "👥 Кандидати",
+        page_title: "Наши Кандидати",
+        cta_title: "🗳️ Гласајте за Листу LÖWEN!",
+        cta_text: "Јасно. Снажно. На вашој страни. — Заједно мењамо ствари. Сада."
+    },
+    fa: {
+        subtitle: "نسیم تازه برای شورای کارگری",
+        nav_home: "🏠 خانه",
+        nav_wind: "نسیم تازه",
+        nav_ig: "IG Metall",
+        nav_trans: "شفافیت",
+        nav_entgelt: "حقوق",
+        nav_betrieb: "در محل کار",
+        nav_bewerber: "👥 کاندیداها",
+        page_title: "کاندیداهای ما",
+        cta_title: "🗳️ به لیست LÖWEN رأی دهید!",
+        cta_text: "واضح. قوی. در کنار شما. — با هم تغییر ایجاد می‌کنیم. همین حالا."
+    }
+};
+
+function setLang(code) {
+    const t = translations[code] || translations['de'];
+    document.querySelectorAll('[data-key]').forEach(el => {
+        const key = el.getAttribute('data-key');
+        if (t[key]) el.textContent = t[key];
+    });
+    document.querySelectorAll('.lang-bar button').forEach(btn => btn.classList.remove('active'));
+    const idx = ['de','tr','ru','en','uk','ro','pl','ar','hr','bs','sr','fa'].indexOf(code);
+    if (idx >= 0) document.querySelectorAll('.lang-bar button')[idx].classList.add('active');
+    document.documentElement.lang = code;
+    document.documentElement.dir = ['ar','fa'].includes(code) ? 'rtl' : 'ltr';
+}
+</script>
+</body>
+</html>
