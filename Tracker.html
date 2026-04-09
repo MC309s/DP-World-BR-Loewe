@@ -26,13 +26,14 @@
 
   <script>
     const NAMESPACE = "loewen-br";
-    const PAGES = ["index", "bewerber"];
+    const PAGES = ["index", "bewerber", "wahl-info"];
     const DAYS_BACK = 30;
 
     // Farben für jede Seite
     const colors = {
       index: { border: "#F2A900", background: "rgba(242,169,0,0.2)" },
       bewerber: { border: "#00BFFF", background: "rgba(0,191,255,0.2)" }
+       "wahl-info": { border: "#7CFC00", background: "rgba(124,252,0,0.2)" }
     };
 
     function formatDate(offset) {
@@ -94,14 +95,25 @@
               fill: true
             }]
           },
-          options: {
-            responsive: true,
-            plugins: { legend: { labels: { color: "#eee" } } },
-            scales: {
-              x: { ticks: { color: "#ccc" } },
-              y: { ticks: { color: "#ccc" }, beginAtZero: true }
-            }
-          }
+         options: {
+  responsive: true,
+  plugins: {
+    legend: {
+      labels: { color: "#eee" }
+    }
+  },
+  scales: {
+    x: {
+      ticks: { color: "#ccc" }
+    },
+    y: {
+      ticks: { color: "#ccc" },
+      beginAtZero: true,
+      min: 0,
+      suggestedMax: Math.max(1, ...values)
+    }
+  }
+}
         });
       }
     }
