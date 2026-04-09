@@ -1,127 +1,112 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<title>Privates Besucher-Dashboard</title>
-
-<!-- ✅ Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<style>
-body {
-  background: #0e0e0e;
-  color: #eee;
-  font-family: Arial, sans-serif;
-  padding: 20px;
-}
-h1 { margin-bottom: 5px; }
-h2 { margin-top: 40px; }
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
-}
-th, td {
-  border: 1px solid #333;
-  padding: 6px;
-  text-align: center;
-}
-th {
-  background: #1a1a1a;
-}
-.canvas-wrap {
-  margin-top: 20px;
-}
-</style>
+  <meta charset="UTF-8">
+  <title>Privates Besucher-Dashboard</title>
+  <!-- ✅ Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      background: #0e0e0e;
+      color: #eee;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    h1 { margin-bottom: 5px; }
+    h2 { margin-top: 40px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    th, td { border: 1px solid #333; padding: 6px; text-align: center; }
+    th { background: #1a1a1a; }
+    .canvas-wrap { margin-top: 20px; }
+  </style>
 </head>
-
 <body>
+  <h1>📊 Besucher-Dashboard</h1>
+  <div id="dashboard"></div>
 
-<h1>📊 Besucher-Dashboard</h1>
+  <script>
+    const NAMESPACE = "loewen-br";
+    const PAGES = ["index", "bewerber"];
+    const DAYS_BACK = 30;
 
+    // Farben für jede Seite
+    const colors = {
+      index: { border: "#F2A900", background: "rgba(242,169,0,0.2)" },
+      bewerber: { border: "#00BFFF", background: "rgba(0,191,255,0.2)" }
+    };
 
-<div id="dashboard"></div>
-
-<script>
-const NAMESPACE = "loewen-br";
-const PAGES = ["index", "bewerber"];
-const DAYS_BACK = 30;
-
-function formatDate(offset) {
-  const d = new Date();
-  d.setDate(d.getDate() - offset);
-  return d.toISOString().slice(0, 10);
-}
-
-async function loadDashboard() {
-  const container = document.getElementById("dashboard");
-
-  for (const page of PAGES) {
-    const labels = [];
-    const values = [];
-    let tableHtml = `
-      <h2>Seite: ${page}</h2>
-      <table>
-        <tr><th>Datum</th><th>Besucher</th></tr>
-    `;
-
-    for (let i = DAYS_BACK - 1; i >= 0; i--) {
-      const date = formatDate(i);
-      const key = `visit_${page}_${date}`;
-      let value = 0;
-
-      try {
-        const res = await fetch(`https://api.countapi.xyz/get/${NAMESPACE}/${key}`);
-        const data = await res.json();
-        value = data.value || 0;
-      } catch {}
-
-      labels.push(date);
-      values.push(value);
-      tableHtml += `<tr><td>${date}</td><td>${value}</td></tr>`;
+    function formatDate(offset) {
+      const d = new Date();
+      d.setDate(d.getDate() - offset);
+      return d.toISOString().slice(0, 10);
     }
 
-    tableHtml += "</table>";
-    container.innerHTML += tableHtml;
+    async function loadDashboard() {
+      const container = document.getElementById("dashboard");
 
-    // ✅ Chart
-    const canvasWrap = document.createElement("div");
-    canvasWrap.className = "canvas-wrap";
-    const canvas = document.createElement("canvas");
-    canvasWrap.appendChild(canvas);
-    container.appendChild(canvasWrap);
+      for (const page of PAGES) {
+        const labels = [];
+        const values = [];
 
-    new Chart(canvas, {
-      type: "line",
-      data: {
-        labels,
-        datasets: [{
-          label: `Besucher – ${page}`,
-          data: values,
-          borderColor: "#F2A900",
-          backgroundColor: "rgba(242,169,0,0.2)",
-          tension: 0.3,
-          fill: true
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            labels: { color: "#eee" }
+        // Tabelle
+        let tableHtml = `<h2>Seite: ${page}</h2>
+        <table>
+          <tr><th>Datum</th><th>Besucher</th></tr>`;
+
+        for (let i = DAYS_BACK - 1; i >= 0; i--) {
+          const date = formatDate(i);
+          const key = `visit_${page}_${date}`;
+          let value = 0;
+
+          try {
+            const res = await fetch(`https://api.countapi.xyz/get/${NAMESPACE}/${key}`);
+            const data = await res.json();
+            value = data.value || 0;
+          } catch (err) {
+            console.warn(`Fehler beim Laden von ${key}:`, err);
           }
-        },
-        scales: {
-          x: { ticks: { color: "#ccc" } },
-          y: { ticks: { color: "#ccc" }, beginAtZero: true }
+
+          labels.push(date);
+          values.push(value);
+          tableHtml += `<tr><td>${date}</td><td>${value}</td></tr>`;
         }
+
+        tableHtml += "</table>";
+        container.innerHTML += tableHtml;
+
+        // Chart
+        const canvasWrap = document.createElement("div");
+        canvasWrap.className = "canvas-wrap";
+        const canvas = document.createElement("canvas");
+        canvasWrap.appendChild(canvas);
+        container.appendChild(canvasWrap);
+
+        new Chart(canvas, {
+          type: "line",
+          data: {
+            labels,
+            datasets: [{
+              label: `Besucher – ${page}`,
+              data: values,
+              borderColor: colors[page].border,
+              backgroundColor: colors[page].background,
+              tension: 0.3,
+              fill: true
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: { legend: { labels: { color: "#eee" } } },
+            scales: {
+              x: { ticks: { color: "#ccc" } },
+              y: { ticks: { color: "#ccc" }, beginAtZero: true }
+            }
+          }
+        });
       }
-    });
-  }
-}
+    }
 
-loadDashboard();
-</script>
-
+    loadDashboard();
+  </script>
 </body>
 </html>
