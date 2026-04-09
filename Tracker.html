@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <title>Privates Besucher-Dashboard</title>
-  <!-- ✅ Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
@@ -29,17 +28,26 @@
     const PAGES = ["index", "bewerber", "wahl-info"];
     const DAYS_BACK = 30;
 
-    // Farben für jede Seite
     const colors = {
       index: { border: "#F2A900", background: "rgba(242,169,0,0.2)" },
       bewerber: { border: "#00BFFF", background: "rgba(0,191,255,0.2)" },
-       "wahl-info": { border: "#7CFC00", background: "rgba(124,252,0,0.2)" }
+      "wahl-info": { border: "#7CFC00", background: "rgba(124,252,0,0.2)" }
     };
 
     function formatDate(offset) {
       const d = new Date();
       d.setDate(d.getDate() - offset);
       return d.toISOString().slice(0, 10);
+    }
+
+    async function trackVisit(page) {
+      const date = new Date().toISOString().slice(0, 10);
+      const key = `visit_${page}_${date}`;
+      try {
+        await fetch(`https://api.countapi.xyz/hit/${NAMESPACE}/${key}`);
+      } catch (err) {
+        console.warn(`Fehler beim Tracken von ${key}:`, err);
+      }
     }
 
     async function loadDashboard() {
@@ -49,7 +57,6 @@
         const labels = [];
         const values = [];
 
-        // Tabelle
         let tableHtml = `<h2>Seite: ${page}</h2>
         <table>
           <tr><th>Datum</th><th>Besucher</th></tr>`;
@@ -95,29 +102,31 @@
               fill: true
             }]
           },
-         options: {
-  responsive: true,
-  plugins: {
-    legend: {
-      labels: { color: "#eee" }
-    }
-  },
-  scales: {
-    x: {
-      ticks: { color: "#ccc" }
-    },
-    y: {
-      ticks: { color: "#ccc" },
-      beginAtZero: true,
-      min: 0,
-      suggestedMax: Math.max(1, ...values)
-    }
-  }
-}
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { labels: { color: "#eee" } }
+            },
+            scales: {
+              x: { ticks: { color: "#ccc" } },
+              y: {
+                ticks: { color: "#ccc" },
+                beginAtZero: true,
+                min: 0,
+                suggestedMax: Math.max(1, ...values)
+              }
+            }
+          }
         });
       }
     }
 
+    // Automatisch Besucher tracken
+    const currentPage = window.location.pathname.includes("bewerber") ? "bewerber" :
+                        window.location.pathname.includes("wahl-info") ? "wahl-info" : "index";
+    trackVisit(currentPage);
+
+    // Dashboard laden
     loadDashboard();
   </script>
 </body>
