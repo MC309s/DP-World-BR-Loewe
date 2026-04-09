@@ -11,20 +11,29 @@ body {
   font-family: Arial, sans-serif;
   padding: 20px;
 }
-h1 { margin-bottom: 20px; text-align:center; }
-.dashboard { display: flex; gap: 20px; justify-content: space-around; flex-wrap: wrap; }
+h1 { text-align:center; margin-bottom:30px; }
+.dashboard {
+  display: flex;
+  gap: 20px;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
 .page-box {
   background: #1a1a1a;
+  border-radius: 10px;
   padding: 10px;
-  border-radius: 8px;
-  width: 30%;
-  min-width: 280px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  width: 32%;
+  min-width: 320px;
 }
-.page-box h2 { font-size: 18px; margin-bottom: 10px; }
-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 10px; }
-th, td { border: 1px solid #333; padding: 4px; text-align: center; }
-th { background: #111; }
-canvas { width: 100% !important; height: 200px !important; }
+.chart-wrap { flex: 2; }
+table-wrap { flex: 1; margin-left:10px; overflow-y:auto; max-height:220px; }
+table { width:100%; border-collapse: collapse; font-size:12px; }
+th, td { border:1px solid #333; padding:4px; text-align:center; }
+th { background:#111; }
+canvas { width:100% !important; height:220px !important; }
 </style>
 </head>
 <body>
@@ -33,119 +42,150 @@ canvas { width: 100% !important; height: 200px !important; }
 <div class="dashboard" id="dashboard"></div>
 
 <script>
-const PAGES = ["index", "bewerber", "wahl-info"];
-const colors = {
-  index: { border: "#F2A900", background: "rgba(242,169,0,0.2)" },
-  bewerber: { border: "#00BFFF", background: "rgba(0,191,255,0.2)" },
-  "wahl-info": { border: "#7CFC00", background: "rgba(124,252,0,0.2)" }
-};
+const PAGES = ["index","bewerber","wahl-info"];
 const DAYS_BACK = 30;
+const colors = {
+  index: { border:"#F2A900", background:"rgba(242,169,0,0.2)" },
+  bewerber: { border:"#00BFFF", background:"rgba(0,191,255,0.2)" },
+  "wahl-info": { border:"#7CFC00", background:"rgba(124,252,0,0.2)" }
+};
+
+const cachedData = {};  // Speichert die Besucherzahlen
+const charts = {};      // Speichert die Chart-Objekte
 
 // Format YYYY-MM-DD
-function formatDate(offset) {
-  const d = new Date();
-  d.setDate(d.getDate() - offset);
+function formatDate(offset){
+  const d=new Date();
+  d.setDate(d.getDate()-offset);
   return d.toISOString().slice(0,10);
 }
 
-// Prüfen und erstellen (optional, nur wenn noch nicht existiert)
-async function initKey(key) {
-  try {
+// Key initialisieren, falls nicht vorhanden
+async function initKey(key){
+  try{
     const res = await fetch(`https://countapi.mileshilliard.com/api/v1/get/${key}`);
-    if (res.status === 404) {
+    if(res.status===404){
       await fetch(`https://countapi.mileshilliard.com/api/v1/set/${key}?value=0`);
     }
-  } catch(e) { console.warn(e); }
+  }catch(e){ console.warn(e); }
 }
 
-// Hit (Besucher zählen)
-async function hitKey(page) {
+// Besucher zählen für aktuelle Seite
+async function hitKey(page){
   const date = formatDate(0);
   const key = `visit_${page}_${date}`;
-  try {
+  try{
     await fetch(`https://countapi.mileshilliard.com/api/v1/hit/${key}`);
-  } catch(e) { console.warn(e); }
+  }catch(e){ console.warn(e); }
 }
 
-// Dashboard laden
-async function loadDashboard() {
-  const container = document.getElementById("dashboard");
+// Dashboard aufbauen
+async function loadDashboard(){
+  const container=document.getElementById("dashboard");
 
-  for (const page of PAGES) {
-    // Box für jede Seite
-    const box = document.createElement("div");
-    box.className = "page-box";
+  for(const page of PAGES){
+    cachedData[page]=[];
+    
+    const box=document.createElement("div");
+    box.className="page-box";
     container.appendChild(box);
 
-    const h2 = document.createElement("h2");
-    h2.textContent = page.toUpperCase();
-    box.appendChild(h2);
+    // Chart-Bereich
+    const chartWrap=document.createElement("div");
+    chartWrap.className="chart-wrap";
+    const canvas=document.createElement("canvas");
+    chartWrap.appendChild(canvas);
+    box.appendChild(chartWrap);
 
-    const labels = [];
-    const values = [];
+    // Tabelle-Bereich
+    const tableWrap=document.createElement("div");
+    tableWrap.className="table-wrap";
+    const table=document.createElement("table");
+    table.innerHTML="<tr><th>Datum</th><th>Besucher</th></tr>";
+    tableWrap.appendChild(table);
+    box.appendChild(tableWrap);
 
-    // Tabelle
-    const table = document.createElement("table");
-    table.innerHTML = "<tr><th>Datum</th><th>Besucher</th></tr>";
-    box.appendChild(table);
-
-    for (let i = DAYS_BACK - 1; i >= 0; i--) {
-      const date = formatDate(i);
-      const key = `visit_${page}_${date}`;
+    // Daten abrufen
+    const labels=[];
+    const values=[];
+    for(let i=DAYS_BACK-1;i>=0;i--){
+      const date=formatDate(i);
+      const key=`visit_${page}_${date}`;
       await initKey(key);
 
-      let value = 0;
-      try {
-        const res = await fetch(`https://countapi.mileshilliard.com/api/v1/get/${key}`);
-        const data = await res.json();
-        value = data.value || 0;
-      } catch(e) { console.warn(e); }
+      let value=0;
+      try{
+        const res=await fetch(`https://countapi.mileshilliard.com/api/v1/get/${key}`);
+        const data=await res.json();
+        value=data.value||0;
+      }catch(e){ console.warn(e); }
 
+      cachedData[page].push(value);
       labels.push(date);
       values.push(value);
 
-      const tr = document.createElement("tr");
-      tr.innerHTML = `<td>${date}</td><td>${value}</td>`;
+      const tr=document.createElement("tr");
+      tr.innerHTML=`<td>${date}</td><td>${value}</td>`;
       table.appendChild(tr);
     }
 
-    // Chart
-    const canvas = document.createElement("canvas");
-    box.appendChild(canvas);
-    new Chart(canvas, {
-      type: "line",
-      data: {
+    // Chart erstellen und persistieren
+    charts[page]=new Chart(canvas,{
+      type:"line",
+      data:{
         labels,
-        datasets: [{
-          label: `Besucher – ${page}`,
-          data: values,
-          borderColor: colors[page].border,
-          backgroundColor: colors[page].background,
-          fill: true,
-          tension: 0.3
+        datasets:[{
+          label:`Besucher – ${page}`,
+          data:values,
+          borderColor:colors[page].border,
+          backgroundColor:colors[page].background,
+          fill:true,
+          tension:0.3
         }]
       },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: { labels: { color: "#eee", font: { size: 12 } } }
-        },
-        scales: {
-          x: { ticks: { color: "#ccc", maxRotation: 0 } },
-          y: { ticks: { color: "#ccc" }, beginAtZero:true, min:0, suggestedMax: Math.max(1,...values) }
+      options:{
+        responsive:true,
+        plugins:{ legend:{ labels:{ color:"#eee", font:{size:12} } } },
+        scales:{
+          x:{ ticks:{ color:"#ccc", maxRotation:0 } },
+          y:{ ticks:{ color:"#ccc" }, beginAtZero:true, min:0, suggestedMax: Math.max(1,...values) }
         }
       }
     });
   }
 }
 
+// Daten aktualisieren ohne Chart neu zu erstellen
+async function updateDashboard(){
+  for(const page of PAGES){
+    const values=[];
+    for(let i=DAYS_BACK-1;i>=0;i--){
+      const date=formatDate(i);
+      const key=`visit_${page}_${date}`;
+      let value=0;
+      try{
+        const res=await fetch(`https://countapi.mileshilliard.com/api/v1/get/${key}`);
+        const data=await res.json();
+        value=data.value||0;
+      }catch(e){ console.warn(e); }
+      values.push(value);
+    }
+    cachedData[page]=values;
+    charts[page].data.datasets[0].data=values;
+    charts[page].update();
+  }
+}
+
 // Hit für aktuelle Seite
-const currentPage = window.location.pathname.includes("bewerber") ? "bewerber" :
-                    window.location.pathname.includes("wahl-info") ? "wahl-info" : "index";
+const currentPage=window.location.pathname.includes("bewerber")?"bewerber":
+                  window.location.pathname.includes("wahl-info")?"wahl-info":"index";
 hitKey(currentPage);
 
-// Dashboard laden
+// Dashboard initial laden
 loadDashboard();
+
+// Optional: alle 30 Sekunden aktualisieren
+setInterval(updateDashboard,30000);
 
 </script>
 
