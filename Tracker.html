@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <title>Privates Besucher-Dashboard</title>
 
+<!-- ✅ Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <style>
 body {
   background: #0e0e0e;
@@ -11,7 +14,7 @@ body {
   font-family: Arial, sans-serif;
   padding: 20px;
 }
-h1 { margin-bottom: 10px; }
+h1 { margin-bottom: 5px; }
 h2 { margin-top: 40px; }
 table {
   width: 100%;
@@ -20,11 +23,14 @@ table {
 }
 th, td {
   border: 1px solid #333;
-  padding: 8px;
+  padding: 6px;
   text-align: center;
 }
 th {
   background: #1a1a1a;
+}
+.canvas-wrap {
+  margin-top: 20px;
 }
 </style>
 </head>
@@ -51,24 +57,66 @@ async function loadDashboard() {
   const container = document.getElementById("dashboard");
 
   for (const page of PAGES) {
-    let html = `<h2>Seite: ${page}</h2>`;
-    html += `<table><tr><th>Datum</th><th>Besucher</th></tr>`;
+    const labels = [];
+    const values = [];
+    let tableHtml = `
+      <h2>Seite: ${page}</h2>
+      <table>
+        <tr><th>Datum</th><th>Besucher</th></tr>
+    `;
 
-    for (let i = 0; i < DAYS_BACK; i++) {
+    for (let i = DAYS_BACK - 1; i >= 0; i--) {
       const date = formatDate(i);
       const key = `visit_${page}_${date}`;
+      let value = 0;
 
       try {
         const res = await fetch(`https://api.countapi.xyz/get/${NAMESPACE}/${key}`);
         const data = await res.json();
-        html += `<tr><td>${date}</td><td>${data.value || 0}</td></tr>`;
-      } catch {
-        html += `<tr><td>${date}</td><td>0</td></tr>`;
-      }
+        value = data.value || 0;
+      } catch {}
+
+      labels.push(date);
+      values.push(value);
+      tableHtml += `<tr><td>${date}</td><td>${value}</td></tr>`;
     }
 
-    html += "</table>";
-    container.innerHTML += html;
+    tableHtml += "</table>";
+    container.innerHTML += tableHtml;
+
+    // ✅ Chart
+    const canvasWrap = document.createElement("div");
+    canvasWrap.className = "canvas-wrap";
+    const canvas = document.createElement("canvas");
+    canvasWrap.appendChild(canvas);
+    container.appendChild(canvasWrap);
+
+    new Chart(canvas, {
+      type: "line",
+      data: {
+        labels,
+        datasets: [{
+          label: `Besucher – ${page}`,
+          data: values,
+          borderColor: "#F2A900",
+          backgroundColor: "rgba(242,169,0,0.2)",
+          tension: 0.3,
+          fill: true
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            labels: { color: "#eee" }
+          }
+        },
+        scales: {
+          x: { ticks: { color: "#ccc" } },
+          y: { ticks: { color: "#ccc" }, beginAtZero: true }
+        }
+      }
+    });
   }
 }
 
