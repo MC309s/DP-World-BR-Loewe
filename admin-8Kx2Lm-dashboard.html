@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Privates Besucher-Dashboard</title>
+
+<style>
+body {
+  background: #0e0e0e;
+  color: #eee;
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+h1 { margin-bottom: 10px; }
+h2 { margin-top: 40px; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+th, td {
+  border: 1px solid #333;
+  padding: 8px;
+  text-align: center;
+}
+th {
+  background: #1a1a1a;
+}
+</style>
+</head>
+
+<body>
+
+<h1>📊 Besucher-Dashboard</h1>
+<p>Geheime URL – nur für dich</p>
+
+<div id="dashboard"></div>
+
+<script>
+const NAMESPACE = "loewen-br";
+const PAGES = ["index", "bewerber"];
+const DAYS_BACK = 30;
+
+function formatDate(offset) {
+  const d = new Date();
+  d.setDate(d.getDate() - offset);
+  return d.toISOString().slice(0, 10);
+}
+
+async function loadDashboard() {
+  const container = document.getElementById("dashboard");
+
+  for (const page of PAGES) {
+    let html = `<h2>Seite: ${page}</h2>`;
+    html += `<table><tr><th>Datum</th><th>Besucher</th></tr>`;
+
+    for (let i = 0; i < DAYS_BACK; i++) {
+      const date = formatDate(i);
+      const key = `visit_${page}_${date}`;
+
+      try {
+        const res = await fetch(`https://api.countapi.xyz/get/${NAMESPACE}/${key}`);
+        const data = await res.json();
+        html += `<tr><td>${date}</td><td>${data.value || 0}</td></tr>`;
+      } catch {
+        html += `<tr><td>${date}</td><td>0</td></tr>`;
+      }
+    }
+
+    html += "</table>";
+    container.innerHTML += html;
+  }
+}
+
+loadDashboard();
+</script>
+
+</body>
+</html>
