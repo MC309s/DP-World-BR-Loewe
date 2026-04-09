@@ -1,106 +1,126 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<title>Besucher-Dashboard</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<style>
-body {
-  background: #0e0e0e;
-  color: #eee;
-  font-family: Arial, sans-serif;
-  padding: 20px;
-}
-h1 { text-align:center; margin-bottom:30px; }
+  <meta charset="UTF-8">
+  <title>Besucher-Dashboard</title>
 
-.dashboard {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-}
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-.page-box {
-  background: #1a1a1a;
-  border-radius: 10px;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  width: 600px;
-  min-width: 320px;
-}
+  <style>
+    body {
+      background: #0e0e0e;
+      color: #eee;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
 
-canvas { width:100% !important; height:250px !important; }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
 
-@media (max-width: 650px) {
-  .page-box { width: 100%; }
-}
-</style>
+    .dashboard {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .page-box {
+      background: #1a1a1a;
+      border-radius: 10px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      width: 600px;
+      min-width: 320px;
+    }
+
+    canvas {
+      width: 100% !important;
+      height: 250px !important;
+    }
+
+    @media (max-width: 650px) {
+      .page-box { width: 100%; }
+    }
+  </style>
 </head>
+
 <body>
 
 <h1>📊 Besucher-Dashboard</h1>
 <div class="dashboard" id="dashboard"></div>
 
 <script>
-const PAGES = ["index","bewerber","wahl-info"];
+/* ===========================
+   KONFIGURATION
+=========================== */
+const PAGES = ["index", "bewerber", "wahl-info"];
 const DAYS_BACK = 30;
+const API_BASE = "https://countapi.mileshilliard.com/api/v1";
 
 const colors = {
-  index: { border:"#F2A900", background:"rgba(242,169,0,0.2)" },
-  bewerber: { border:"#00BFFF", background:"rgba(0,191,255,0.2)" },
-  "wahl-info": { border:"#7CFC00", background:"rgba(124,252,0,0.2)" }
+  index: {
+    border: "#F2A900",
+    background: "rgba(242,169,0,0.2)"
+  },
+  bewerber: {
+    border: "#00BFFF",
+    background: "rgba(0,191,255,0.2)"
+  },
+  "wahl-info": {
+    border: "#7CFC00",
+    background: "rgba(124,252,0,0.2)"
+  }
 };
 
 const charts = {};
 
-// Format YYYY-MM-DD
-function formatDate(offset){
+/* ===========================
+   HILFSFUNKTIONEN
+=========================== */
+
+// YYYY-MM-DD
+function formatDate(offset) {
   const d = new Date();
-  d.setDate(d.getDate()-offset);
-  return d.toISOString().slice(0,10);
+  d.setDate(d.getDate() - offset);
+  return d.toISOString().slice(0, 10);
 }
 
-// Hit für aktuelle Seite
-async function hitKey(page){
-  const date = formatDate(0);
-  const key = `visit_${page}_${date}`;
-  try{
-    await fetch(`https://countapi.mileshilliard.com/api/v1/hit/${key}`);
-  }catch(e){ console.warn(e); }
+// Zählt Besuch für HEUTE (erstellt Key automatisch)
+async function hitKey(page) {
+  const key = `visit_${page}_${formatDate(0)}`;
+  try {
+    await fetch(`${API_BASE}/hit/${key}`);
+  } catch (e) {
+    console.warn("Hit fehlgeschlagen:", e);
+  }
 }
 
-// GET Wert von Key
-async function getValue(key){
-  try{
-    const res = await fetch(`https://countapi.mileshilliard.com/api/v1/get/${key}`);
-    if(res.ok){
+// Holt Wert (0 wenn Key nicht existiert)
+async function getValue(key) {
+  try {
+    const res = await fetch(`${API_BASE}/get/${key}`);
+    if (res.ok) {
       const data = await res.json();
       return data.value || 0;
     }
-  }catch(e){ console.warn(e); }
+  } catch (e) {
+    console.warn("Get fehlgeschlagen:", e);
+  }
   return 0;
 }
 
-// Initialisiere Keys der letzten 30 Tage auf 0
-async function initKeys(){
-  const promises = [];
-  for(const page of PAGES){
-    for(let i=DAYS_BACK-1;i>=0;i--){
-      const date = formatDate(i);
-      const key = `visit_${page}_${date}`;
-      promises.push(fetch(`https://countapi.mileshilliard.com/api/v1/set/${key}?value=0`).catch(e=>console.warn(e)));
-    }
-  }
-  await Promise.all(promises);
-}
+/* ===========================
+   DASHBOARD
+=========================== */
 
-// Dashboard initial laden
-async function loadDashboard(){
+async function loadDashboard() {
   const container = document.getElementById("dashboard");
 
-  for(const page of PAGES){
+  for (const page of PAGES) {
     const box = document.createElement("div");
     box.className = "page-box";
     container.appendChild(box);
@@ -108,64 +128,96 @@ async function loadDashboard(){
     const canvas = document.createElement("canvas");
     box.appendChild(canvas);
 
-    // Alle Werte parallel abrufen
-    const promises = [];
-    for(let i=DAYS_BACK-1;i>=0;i--){
-      const date = formatDate(i);
-      const key = `visit_${page}_${date}`;
-      promises.push(getValue(key));
+    // Werte parallel laden
+    const valuePromises = [];
+    for (let i = DAYS_BACK - 1; i >= 0; i--) {
+      const key = `visit_${page}_${formatDate(i)}`;
+      valuePromises.push(getValue(key));
     }
-    const values = await Promise.all(promises);
-    const labels = Array.from({length:DAYS_BACK}, (_,i) => formatDate(DAYS_BACK-1-i));
 
-    charts[page] = new Chart(canvas,{
-      type:"line",
-      data:{
+    const values = await Promise.all(valuePromises);
+    const labels = Array.from(
+      { length: DAYS_BACK },
+      (_, i) => formatDate(DAYS_BACK - 1 - i)
+    );
+
+    charts[page] = new Chart(canvas, {
+      type: "line",
+      data: {
         labels,
-        datasets:[{
+        datasets: [{
           label: `Besucher – ${page}`,
           data: values,
           borderColor: colors[page].border,
           backgroundColor: colors[page].background,
+          tension: 0.3,
           fill: true,
-          tension: 0.3
+          pointRadius: 4,
+          pointHoverRadius: 6
         }]
       },
-      options:{
-        responsive:true,
-        plugins:{ legend:{ labels:{ color:"#eee", font:{size:12} } } },
-        scales:{
-          x:{ ticks:{ color:"#ccc", maxRotation:0 } },
-          y:{ ticks:{ color:"#ccc" }, beginAtZero:true, min:0, suggestedMax: Math.max(1,...values) }
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            labels: {
+              color: "#eee",
+              font: { size: 12 }
+            }
+          }
+        },
+        scales: {
+          x: {
+            ticks: {
+              color: "#ccc",
+              maxRotation: 0
+            }
+          },
+          y: {
+            ticks: { color: "#ccc" },
+            beginAtZero: true,
+            min: 0,
+            suggestedMax: Math.max(1, ...values)
+          }
         }
       }
     });
   }
 }
 
-// Dashboard Daten aktualisieren (parallel)
-async function updateDashboard(){
-  for(const page of PAGES){
-    const promises = [];
-    for(let i=DAYS_BACK-1;i>=0;i--){
-      const date = formatDate(i);
-      const key = `visit_${page}_${date}`;
-      promises.push(getValue(key));
+async function updateDashboard() {
+  for (const page of PAGES) {
+    const valuePromises = [];
+    for (let i = DAYS_BACK - 1; i >= 0; i--) {
+      const key = `visit_${page}_${formatDate(i)}`;
+      valuePromises.push(getValue(key));
     }
-    const values = await Promise.all(promises);
+
+    const values = await Promise.all(valuePromises);
     charts[page].data.datasets[0].data = values;
+    charts[page].options.scales.y.suggestedMax = Math.max(1, ...values);
     charts[page].update();
   }
 }
 
-// Hauptfunktion
-async function main(){
-  await initKeys();
+/* ===========================
+   START
+=========================== */
+async function main() {
+  // aktuelle Seite erkennen
   const path = window.location.pathname.toLowerCase();
-  const currentPage = path.includes("bewerber") ? "bewerber" :
-                      path.includes("wahl-info") ? "wahl-info" : "index";
+  const currentPage =
+    path.includes("bewerber") ? "bewerber" :
+    path.includes("wahl-info") ? "wahl-info" :
+    "index";
+
+  // Besuch zählen
   await hitKey(currentPage);
+
+  // Dashboard bauen
   await loadDashboard();
+
+  // Alle 30s aktualisieren
   setInterval(updateDashboard, 30000);
 }
 
