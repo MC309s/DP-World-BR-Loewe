@@ -458,22 +458,12 @@ function setLang(code) {
     document.querySelectorAll('.lang-bar button').forEach((btn, i) => {
         btn.classList.toggle('active', langCodes[i] === code);
     });
-    document.documentElement.lang = code;
+  document.documentElement.lang = code;
     document.documentElement.dir = ['ar','fa'].includes(code) ? 'rtl' : 'ltr';
 }
 </script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="de">
-<head>
-  <meta charset="UTF-8">
-  <title>Index</title>
-</head>
-<body>
 
-<h1>Startseite</h1>
-
+<!-- ✅ TRACKER (HIER ist er richtig!) -->
 <script>
 (function () {
   const NAMESPACE = "loewen-br";
