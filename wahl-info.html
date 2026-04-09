@@ -332,5 +332,15 @@ function setLang(lang) {
 setLang("de");
 </script>
 
+<script>
+  const NAMESPACE = "loewen-br";
+  const PAGE = "index"; // oder "bewerber", "wahl-info"
+
+  const key = `visit_${PAGE}_${new Date().toISOString().slice(0,10)}`;
+
+  fetch(`https://countapi.mileshilliard.com/hit/${NAMESPACE}/${key}`)
+    .catch(() => {});
+</script>
+  
 </body>
 </html>
