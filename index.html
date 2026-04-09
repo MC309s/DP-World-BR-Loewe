@@ -464,3 +464,28 @@ function setLang(code) {
 </script>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Index</title>
+</head>
+<body>
+
+<h1>Startseite</h1>
+
+<script>
+(function () {
+  const NAMESPACE = "loewen-br";
+  const PAGE = "index";
+
+  const today = new Date().toISOString().slice(0, 10);
+  const KEY = `visit_${PAGE}_${today}`;
+
+  fetch(`https://api.countapi.xyz/hit/${NAMESPACE}/${KEY}`)
+    .catch(() => {});
+})();
+</script>
+
+</body>
+</html>
