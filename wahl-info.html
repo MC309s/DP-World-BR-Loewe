@@ -333,13 +333,11 @@ setLang("de");
 </script>
 
 <script>
-  const NAMESPACE = "loewen-br";
-  const PAGE = "index"; // oder "bewerber", "wahl-info"
+const API = "https://countapi.mileshilliard.com/api/v1";
+const page = "wahl-info";
+const today = new Date().toISOString().slice(0,10);
 
-  const key = `visit_${PAGE}_${new Date().toISOString().slice(0,10)}`;
-
-  fetch(`https://countapi.mileshilliard.com/hit/${NAMESPACE}/${key}`)
-    .catch(() => {});
+fetch(`${API}/hit/visit_${page}_${today}`).catch(()=>{});
 </script>
   
 </body>
