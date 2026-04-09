@@ -44,7 +44,7 @@
       const date = new Date().toISOString().slice(0, 10);
       const key = `visit_${page}_${date}`;
       try {
-        await fetch(`https://api.countapi.xyz/hit/${NAMESPACE}/${key}`);
+        await fetch(`https://countapi.mileshilliard.com/hit/${NAMESPACE}/${key}`)
       } catch (err) {
         console.warn(`Fehler beim Tracken von ${key}:`, err);
       }
@@ -67,7 +67,7 @@
           let value = 0;
 
           try {
-            const res = await fetch(`https://api.countapi.xyz/get/${NAMESPACE}/${key}`);
+            const res = await fetch(`https://countapi.mileshilliard.com/get/${NAMESPACE}/${key}`)
             const data = await res.json();
             value = data.value || 0;
           } catch (err) {
