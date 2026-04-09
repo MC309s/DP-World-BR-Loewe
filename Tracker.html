@@ -25,22 +25,16 @@ h1 { text-align:center; margin-bottom:30px; }
   border-radius: 10px;
   padding: 10px;
   display: flex;
-  flex-direction: row;
-  align-items: flex-start;
+  flex-direction: column;
+  align-items: stretch;
   width: 600px;
   min-width: 320px;
 }
 
-.chart-wrap { flex: 2; }
-.table-wrap { flex: 1; margin-left:10px; overflow-y:auto; max-height:220px; }
-table { width:100%; border-collapse: collapse; font-size:12px; }
-th, td { border:1px solid #333; padding:4px; text-align:center; }
-th { background:#111; }
-canvas { width:100% !important; height:220px !important; }
+canvas { width:100% !important; height:250px !important; }
 
 @media (max-width: 650px) {
-  .page-box { flex-direction: column; width: 100%; }
-  .table-wrap { margin-left:0; margin-top:10px; max-height:150px; }
+  .page-box { width: 100%; }
 }
 </style>
 </head>
@@ -59,17 +53,16 @@ const colors = {
   "wahl-info": { border:"#7CFC00", background:"rgba(124,252,0,0.2)" }
 };
 
-const cachedData = {}; // Besucherzahlen
-const charts = {};     // Chart-Objekte
+const charts = {};
 
 // Format YYYY-MM-DD
 function formatDate(offset){
-  const d=new Date();
+  const d = new Date();
   d.setDate(d.getDate()-offset);
   return d.toISOString().slice(0,10);
 }
 
-// Hit für aktuelle Seite (Key wird automatisch erstellt, falls nicht existent)
+// Hit für aktuelle Seite
 async function hitKey(page){
   const date = formatDate(0);
   const key = `visit_${page}_${date}`;
@@ -90,59 +83,47 @@ async function getValue(key){
   return 0;
 }
 
+// Initialisiere alle Keys der letzten 30 Tage auf 0
+async function initKeys(){
+  for(const page of PAGES){
+    for(let i=DAYS_BACK-1;i>=0;i--){
+      const date = formatDate(i);
+      const key = `visit_${page}_${date}`;
+      try{
+        await fetch(`https://countapi.mileshilliard.com/api/v1/set/${key}?value=0`);
+      }catch(e){ console.warn(e); }
+    }
+  }
+}
+
 // Dashboard initial laden
 async function loadDashboard(){
   const container = document.getElementById("dashboard");
 
   for(const page of PAGES){
-    cachedData[page] = [];
-
-    // Box
     const box = document.createElement("div");
     box.className = "page-box";
     container.appendChild(box);
 
-    // Chart
-    const chartWrap = document.createElement("div");
-    chartWrap.className = "chart-wrap";
     const canvas = document.createElement("canvas");
-    chartWrap.appendChild(canvas);
-    box.appendChild(chartWrap);
+    box.appendChild(canvas);
 
-    // Tabelle
-    const tableWrap = document.createElement("div");
-    tableWrap.className = "table-wrap";
-    const table = document.createElement("table");
-    table.innerHTML = "<tr><th>Datum</th><th>Besucher</th></tr>";
-    tableWrap.appendChild(table);
-    box.appendChild(tableWrap);
-
-    // Labels und Werte sammeln
     const labels = [];
     const values = [];
-
     for(let i=DAYS_BACK-1;i>=0;i--){
-      const date=formatDate(i);
+      const date = formatDate(i);
       const key = `visit_${page}_${date}`;
       const value = await getValue(key);
-
-      cachedData[page].push(value);
       labels.push(date);
       values.push(value);
-
-      // Tabellenzeile
-      const tr = document.createElement("tr");
-      tr.innerHTML = `<td>${date}</td><td>${value}</td>`;
-      table.appendChild(tr);
     }
 
-    // Chart erstellen
     charts[page] = new Chart(canvas,{
       type:"line",
       data:{
         labels,
         datasets:[{
-          label:`Besucher – ${page}`,
+          label: `Besucher – ${page}`,
           data: values,
           borderColor: colors[page].border,
           backgroundColor: colors[page].background,
@@ -172,32 +153,23 @@ async function updateDashboard(){
       const value = await getValue(key);
       values.push(value);
     }
-    cachedData[page] = values;
-
-    // Chart-Daten aktualisieren
     charts[page].data.datasets[0].data = values;
     charts[page].update();
-
-    // Tabelle aktualisieren
-    const box = charts[page].canvas.parentElement.parentElement;
-    const table = box.querySelector("table");
-    const rows = table.querySelectorAll("tr:not(:first-child)");
-    values.forEach((v,i)=>{
-      rows[i].children[1].textContent = v;
-    });
   }
 }
 
-// Hit für aktuelle Seite
-const currentPage = window.location.pathname.includes("bewerber") ? "bewerber" :
-                    window.location.pathname.includes("wahl-info") ? "wahl-info" : "index";
-hitKey(currentPage);
+// Hauptfunktion
+async function main(){
+  await initKeys();
+  const path = window.location.pathname.toLowerCase();
+  const currentPage = path.includes("bewerber") ? "bewerber" :
+                      path.includes("wahl-info") ? "wahl-info" : "index";
+  await hitKey(currentPage);
+  await loadDashboard();
+  setInterval(updateDashboard, 30000);
+}
 
-// Dashboard initial laden
-loadDashboard();
-
-// Automatische Aktualisierung alle 30 Sekunden
-setInterval(updateDashboard, 30000);
+main();
 </script>
 
 </body>
