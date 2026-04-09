@@ -11,6 +11,27 @@ body {
   color: #0A2540;
   margin: 0;
 }
+.lang-bar {
+  background: #0A2540;
+  padding: 8px 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.lang-bar button {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.3);
+  color: #ccc;
+  font-size: 12px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+.lang-bar button.active {
+  background: #F2A900;
+  color: #0A2540;
+  font-weight: bold;
+}
 header {
   background: #0A2540;
   color: #fff;
@@ -54,100 +75,185 @@ footer {
 
 <body>
 
+<!-- 🌍 Language Switch -->
+<div class="lang-bar">
+  <button class="active" onclick="setLang('de')">🇩🇪 Deutsch</button>
+  <button onclick="setLang('tr')">🇹🇷 Türkçe</button>
+  <button onclick="setLang('en')">🇬🇧 English</button>
+</div>
+
 <header>
-  <h1>Information zur Betriebsratswahl</h1>
+  <h1 data-key="title">Information zur Betriebsratswahl</h1>
   <p>Löwen Liste 🦁</p>
 </header>
 
 <main>
 
-<p><strong>Liebe Kolleginnen und Kollegen,</strong></p>
+<p><strong data-key="intro_hello">Liebe Kolleginnen und Kollegen,</strong></p>
 
-<p>
-wir möchten euch transparent darüber informieren, was aktuell rund um die
+<p data-key="intro_text">
+Wir möchten euch transparent darüber informieren, was aktuell rund um die
 Betriebsratswahl passiert – und wie wir bestimmte Entwicklungen bewerten.
 </p>
 
-<h2>Wahlplakate im Betrieb</h2>
+<h2 data-key="section_posters">Wahlplakate im Betrieb</h2>
 
-<p>
+<p data-key="posters_question">
 Wir haben den Wahlvorstand gefragt, an welchen Stellen im Betrieb Wahlplakate
-angebracht werden dürfen, um euch über unsere Inhalte zu informieren.
+angebracht werden dürfen.
 </p>
 
 <div class="highlight">
-Die erste Rückmeldung lautete:
-<br><br>
-<strong>Es wird empfohlen, vollständig auf Plakate und Aushänge im Betrieb zu verzichten.</strong>
+  <strong data-key="posters_answer">
+  Es wird empfohlen, vollständig auf Plakate und Aushänge im Betrieb zu verzichten.
+  </strong>
 </div>
 
-<p>Begründet wurde dies unter anderem mit:</p>
-
+<p data-key="reasons_intro">Begründet wurde dies unter anderem mit:</p>
 <ul>
-  <li>unterschiedlichen technischen oder organisatorischen Möglichkeiten der Listen</li>
-  <li>dem Wunsch nach Chancengleichheit</li>
-  <li>der Vermeidung möglicher Wahlanfechtungen</li>
+  <li data-key="reason1">unterschiedlichen technischen oder organisatorischen Möglichkeiten</li>
+  <li data-key="reason2">dem Wunsch nach Chancengleichheit</li>
+  <li data-key="reason3">der Vermeidung möglicher Wahlanfechtungen</li>
 </ul>
 
-<h2>Unsere Einschätzung</h2>
+<h2 data-key="section_view">Unsere Einschätzung</h2>
 
-<p>
-Wir bewerten diese Begründung kritisch.
-Aus unserer Sicht schafft ein generelles Plakatverbot keine echte
-Chancengleichheit.
+<p data-key="view_text1">
+Wir bewerten diese Begründung kritisch. Ein generelles Plakatverbot schafft aus
+unserer Sicht keine echte Chancengleichheit.
 </p>
 
-<p>
-Wahlwerbung ist grundsätzlich erlaubt. Die Nutzung betrieblicher Mittel ist
-ohnehin untersagt – jede Liste kann jedoch private oder externe Möglichkeiten
-nutzen.
+<p data-key="view_text2">
+Wahlwerbung ist grundsätzlich erlaubt. Jede Liste kann private oder externe
+Möglichkeiten nutzen.
 </p>
 
-<p>
-Weniger Sichtbarkeit bedeutet weniger Information – und damit weniger
-Transparenz für euch als Wählende.
+<p data-key="view_text3">
+Weniger Sichtbarkeit bedeutet weniger Information und schwächt die Transparenz
+der Wahl.
 </p>
 
-<h2>Aktueller Stand</h2>
-
-<p>
-Nach unserer Rückmeldung wurde die Regelung angepasst:
-</p>
+<h2 data-key="section_status">Aktueller Stand</h2>
 
 <ul>
-  <li>Jede Liste darf ein A4‑Plakat einreichen</li>
-  <li>Dieses wird zentral im Betrieb ausgehängt</li>
+  <li data-key="status1">Jede Liste darf ein A4‑Plakat einreichen</li>
+  <li data-key="status2">Dieses wird zentral im Betrieb ausgehängt</li>
 </ul>
 
-<p>
-Das ist ein Schritt in die richtige Richtung – aus unserer Sicht jedoch keine
-vollständige Gleichbehandlung im Wahlkampf.
+<p data-key="status_view">
+Das ist ein Schritt in die richtige Richtung – jedoch keine vollständige
+Gleichbehandlung im Wahlkampf.
 </p>
 
-<h2>Unser Anspruch</h2>
+<h2 data-key="section_values">Unser Anspruch</h2>
 
 <div class="highlight">
-Wir stehen für:
-<br><br>
-<strong>Transparenz · Fairness · eine echte demokratische Wahl</strong>
+  <strong data-key="values">
+  Transparenz · Fairness · eine echte demokratische Wahl
+  </strong>
 </div>
 
-<p>
-Wir halten uns an alle Regeln – sprechen aber offen an, wenn wir Entwicklungen
-für problematisch halten.
+<p data-key="closing">
+Eine starke Wahl braucht nicht weniger, sondern mehr Information.
 </p>
 
-<p>
-Denn eine starke Wahl braucht nicht weniger, sondern mehr Information.
-</p>
-
-<p><strong>Eure Löwen Liste 🦁</strong></p>
+<p><strong data-key="signature">Eure Löwen Liste 🦁</strong></p>
 
 </main>
 
 <footer>
 © 2026 Löwen Liste – Betriebsratswahl
 </footer>
+
+<script>
+const translations = {
+  de: {
+    title: "Information zur Betriebsratswahl",
+    intro_hello: "Liebe Kolleginnen und Kollegen,",
+    intro_text: "Wir möchten euch transparent darüber informieren, was aktuell rund um die Betriebsratswahl passiert – und wie wir bestimmte Entwicklungen bewerten.",
+    section_posters: "Wahlplakate im Betrieb",
+    posters_question: "Wir haben den Wahlvorstand gefragt, an welchen Stellen im Betrieb Wahlplakate angebracht werden dürfen.",
+    posters_answer: "Es wird empfohlen, vollständig auf Plakate und Aushänge im Betrieb zu verzichten.",
+    reasons_intro: "Begründet wurde dies unter anderem mit:",
+    reason1: "unterschiedlichen technischen oder organisatorischen Möglichkeiten",
+    reason2: "dem Wunsch nach Chancengleichheit",
+    reason3: "der Vermeidung möglicher Wahlanfechtungen",
+    section_view: "Unsere Einschätzung",
+    view_text1: "Wir bewerten diese Begründung kritisch. Ein generelles Plakatverbot schafft aus unserer Sicht keine echte Chancengleichheit.",
+    view_text2: "Wahlwerbung ist grundsätzlich erlaubt. Jede Liste kann private oder externe Möglichkeiten nutzen.",
+    view_text3: "Weniger Sichtbarkeit bedeutet weniger Information und schwächt die Transparenz der Wahl.",
+    section_status: "Aktueller Stand",
+    status1: "Jede Liste darf ein A4‑Plakat einreichen",
+    status2: "Dieses wird zentral im Betrieb ausgehängt",
+    status_view: "Das ist ein Schritt in die richtige Richtung – jedoch keine vollständige Gleichbehandlung im Wahlkampf.",
+    section_values: "Unser Anspruch",
+    values: "Transparenz · Fairness · eine echte demokratische Wahl",
+    closing: "Eine starke Wahl braucht nicht weniger, sondern mehr Information.",
+    signature: "Eure Löwen Liste 🦁"
+  },
+
+  tr: {
+    title: "İşyeri Temsilciliği Seçimi Hakkında Bilgilendirme",
+    intro_hello: "Sevgili çalışma arkadaşlarımız,",
+    intro_text: "İşyeri temsilciliği seçimiyle ilgili güncel gelişmeler hakkında sizi şeffaf bir şekilde bilgilendirmek istiyoruz.",
+    section_posters: "İşyerinde Afişler",
+    posters_question: "Seçim afişlerinin işyerinde nerelere asılabileceğini sorduk.",
+    posters_answer: "İşyerinde afiş ve duyurulardan tamamen vazgeçilmesi önerildi.",
+    reasons_intro: "Gerekçeler arasında şunlar yer aldı:",
+    reason1: "liste imkânlarının farklı olması",
+    reason2: "fırsat eşitliği isteği",
+    reason3: "itiraz riskinin azaltılması",
+    section_view: "Bizim Değerlendirmemiz",
+    view_text1: "Bu gerekçeyi eleştirel değerlendiriyoruz. Genel bir afiş yasağı gerçek eşitlik sağlamaz.",
+    view_text2: "Seçim çalışması temelde serbesttir. Her liste özel imkânları kullanabilir.",
+    view_text3: "Daha az görünürlük, daha az bilgi demektir.",
+    section_status: "Mevcut Durum",
+    status1: "Her liste bir A4 afiş sunabilir",
+    status2: "Afiş merkezi olarak asılacaktır",
+    status_view: "Bu bir ilerlemedir ancak tam eşitlik değildir.",
+    section_values: "Bizim Duruşumuz",
+    values: "Şeffaflık · Adalet · Gerçek Demokrasi",
+    closing: "Güçlü bir seçim daha fazla bilgi gerektirir.",
+    signature: "Löwen Listesi 🦁"
+  },
+
+  en: {
+    title: "Information on the Works Council Election",
+    intro_hello: "Dear colleagues,",
+    intro_text: "We want to transparently inform you about current developments regarding the works council election.",
+    section_posters: "Posters at the Workplace",
+    posters_question: "We asked where election posters may be placed in the workplace.",
+    posters_answer: "It was recommended to avoid posters and notices entirely.",
+    reasons_intro: "This was justified by:",
+    reason1: "unequal organisational or technical possibilities",
+    reason2: "ensuring equal opportunities",
+    reason3: "avoiding potential election challenges",
+    section_view: "Our Assessment",
+    view_text1: "We view this reasoning critically. A blanket ban does not create real equality.",
+    view_text2: "Election campaigning is generally allowed.",
+    view_text3: "Less visibility means less information.",
+    section_status: "Current Status",
+    status1: "Each list may submit one A4 poster",
+    status2: "It will be displayed centrally",
+    status_view: "This is a step forward, but not full equality.",
+    section_values: "Our Values",
+    values: "Transparency · Fairness · Real Democracy",
+    closing: "Strong elections need more information, not less.",
+    signature: "Löwen List 🦁"
+  }
+};
+
+function setLang(lang) {
+  const t = translations[lang] || translations.de;
+  document.querySelectorAll("[data-key]").forEach(el => {
+    const key = el.getAttribute("data-key");
+    if (t[key]) el.textContent = t[key];
+  });
+  document.querySelectorAll(".lang-bar button").forEach(btn => btn.classList.remove("active"));
+  event.target.classList.add("active");
+  document.documentElement.lang = lang;
+}
+</script>
 
 </body>
 </html>
