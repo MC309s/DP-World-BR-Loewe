@@ -442,3 +442,15 @@ function setLang(code) {
 </script>
 </body>
 </html>
+<script>
+(function () {
+  const NAMESPACE = "loewen-br";
+  const PAGE = "bewerber";
+
+  const today = new Date().toISOString().slice(0, 10);
+  const KEY = `visit_${PAGE}_${today}`;
+
+  fetch(`https://api.countapi.xyz/hit/${NAMESPACE}/${KEY}`)
+    .catch(() => {});
+})();
+</script>
