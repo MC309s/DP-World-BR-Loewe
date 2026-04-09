@@ -2,148 +2,116 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<title>Besucher-Dashboard Kompakt</title>
+<title>Besucher-Dashboard</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
-  body {
-    background: #1e1e1e;
-    color: #eee;
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 20px;
-  }
-  h1 {
-    text-align: center;
-    margin-bottom: 30px;
-    font-size: 2em;
-    color: #FFD700;
-  }
-  .dashboard {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-  }
-  .card {
-    background: #2a2a2a;
-    padding: 15px;
-    border-radius: 10px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  canvas {
-    max-width: 100%;
-    height: 250px;
-  }
-  .mini-list {
-    margin-top: 10px;
-    max-height: 120px;
-    overflow-y: auto;
-    width: 100%;
-    font-size: 0.8em;
-    border-top: 1px solid #444;
-    padding-top: 5px;
-  }
-  .mini-list div {
-    display: flex;
-    justify-content: space-between;
-    padding: 2px 0;
-  }
-  .page-title {
-    margin-bottom: 10px;
-    font-weight: bold;
-    font-size: 1.2em;
-    color: #FFD700;
-  }
-  /* Scrollbar styling */
-  .mini-list::-webkit-scrollbar {
-    width: 6px;
-  }
-  .mini-list::-webkit-scrollbar-thumb {
-    background: #555;
-    border-radius: 3px;
-  }
+body {
+  background: #0e0e0e;
+  color: #eee;
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+h1 { margin-bottom: 20px; text-align:center; }
+.dashboard { display: flex; gap: 20px; justify-content: space-around; flex-wrap: wrap; }
+.page-box {
+  background: #1a1a1a;
+  padding: 10px;
+  border-radius: 8px;
+  width: 30%;
+  min-width: 280px;
+}
+.page-box h2 { font-size: 18px; margin-bottom: 10px; }
+table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 10px; }
+th, td { border: 1px solid #333; padding: 4px; text-align: center; }
+th { background: #111; }
+canvas { width: 100% !important; height: 200px !important; }
 </style>
 </head>
 <body>
+
 <h1>📊 Besucher-Dashboard</h1>
 <div class="dashboard" id="dashboard"></div>
 
 <script>
-const NAMESPACE = "loewen-br";
 const PAGES = ["index", "bewerber", "wahl-info"];
+const colors = {
+  index: { border: "#F2A900", background: "rgba(242,169,0,0.2)" },
+  bewerber: { border: "#00BFFF", background: "rgba(0,191,255,0.2)" },
+  "wahl-info": { border: "#7CFC00", background: "rgba(124,252,0,0.2)" }
+};
 const DAYS_BACK = 30;
 
-// Farben pro Seite
-const colors = {
-  index: { border: "#FFD700", background: "rgba(255,215,0,0.2)" },
-  bewerber: { border: "#00BFFF", background: "rgba(0,191,255,0.2)" },
-  "wahl-info": { border: "#32CD32", background: "rgba(50,205,50,0.2)" }
-};
-
+// Format YYYY-MM-DD
 function formatDate(offset) {
   const d = new Date();
   d.setDate(d.getDate() - offset);
-  return d.toISOString().slice(0, 10);
+  return d.toISOString().slice(0,10);
 }
 
-// Besucher tracken
-async function trackVisit(page) {
-  const date = new Date().toISOString().slice(0, 10);
+// Prüfen und erstellen (optional, nur wenn noch nicht existiert)
+async function initKey(key) {
+  try {
+    const res = await fetch(`https://countapi.mileshilliard.com/api/v1/get/${key}`);
+    if (res.status === 404) {
+      await fetch(`https://countapi.mileshilliard.com/api/v1/set/${key}?value=0`);
+    }
+  } catch(e) { console.warn(e); }
+}
+
+// Hit (Besucher zählen)
+async function hitKey(page) {
+  const date = formatDate(0);
   const key = `visit_${page}_${date}`;
   try {
-    await fetch(`https://countapi.mileshilliard.com/hit/${NAMESPACE}/${key}`);
-  } catch (err) {
-    console.warn(`Fehler beim Tracken von ${key}:`, err);
-  }
+    await fetch(`https://countapi.mileshilliard.com/api/v1/hit/${key}`);
+  } catch(e) { console.warn(e); }
 }
 
+// Dashboard laden
 async function loadDashboard() {
   const container = document.getElementById("dashboard");
 
   for (const page of PAGES) {
+    // Box für jede Seite
+    const box = document.createElement("div");
+    box.className = "page-box";
+    container.appendChild(box);
+
+    const h2 = document.createElement("h2");
+    h2.textContent = page.toUpperCase();
+    box.appendChild(h2);
+
     const labels = [];
     const values = [];
 
-    // Daten abrufen
+    // Tabelle
+    const table = document.createElement("table");
+    table.innerHTML = "<tr><th>Datum</th><th>Besucher</th></tr>";
+    box.appendChild(table);
+
     for (let i = DAYS_BACK - 1; i >= 0; i--) {
       const date = formatDate(i);
       const key = `visit_${page}_${date}`;
+      await initKey(key);
+
       let value = 0;
       try {
-        const res = await fetch(`https://countapi.mileshilliard.com/get/${NAMESPACE}/${key}`);
+        const res = await fetch(`https://countapi.mileshilliard.com/api/v1/get/${key}`);
         const data = await res.json();
         value = data.value || 0;
-      } catch (err) {
-        console.warn(`Fehler beim Laden von ${key}:`, err);
-      }
+      } catch(e) { console.warn(e); }
+
       labels.push(date);
       values.push(value);
+
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td>${date}</td><td>${value}</td>`;
+      table.appendChild(tr);
     }
 
-    // Card erstellen
-    const card = document.createElement("div");
-    card.className = "card";
-    card.innerHTML = `<div class="page-title">${page.toUpperCase()}</div>`;
-
-    // Canvas
+    // Chart
     const canvas = document.createElement("canvas");
-    card.appendChild(canvas);
-
-    // Mini-Liste
-    const miniList = document.createElement("div");
-    miniList.className = "mini-list";
-    for (let i = 0; i < labels.length; i++) {
-      const row = document.createElement("div");
-      row.innerHTML = `<span>${labels[i]}</span><span>${values[i]}</span>`;
-      miniList.appendChild(row);
-    }
-    card.appendChild(miniList);
-
-    container.appendChild(card);
-
-    // Chart erstellen
+    box.appendChild(canvas);
     new Chart(canvas, {
       type: "line",
       data: {
@@ -153,32 +121,33 @@ async function loadDashboard() {
           data: values,
           borderColor: colors[page].border,
           backgroundColor: colors[page].background,
-          tension: 0.3,
           fill: true,
-          pointRadius: 3
+          tension: 0.3
         }]
       },
       options: {
         responsive: true,
         plugins: {
-          legend: { display: false }
+          legend: { labels: { color: "#eee", font: { size: 12 } } }
         },
         scales: {
-          x: { ticks: { color: "#ccc", maxRotation: 90, minRotation: 45 } },
-          y: { ticks: { color: "#ccc" }, beginAtZero: true, suggestedMax: Math.max(1, ...values) }
+          x: { ticks: { color: "#ccc", maxRotation: 0 } },
+          y: { ticks: { color: "#ccc" }, beginAtZero:true, min:0, suggestedMax: Math.max(1,...values) }
         }
       }
     });
   }
 }
 
-// Aktuelle Seite tracken
+// Hit für aktuelle Seite
 const currentPage = window.location.pathname.includes("bewerber") ? "bewerber" :
                     window.location.pathname.includes("wahl-info") ? "wahl-info" : "index";
-trackVisit(currentPage);
+hitKey(currentPage);
 
 // Dashboard laden
 loadDashboard();
+
 </script>
+
 </body>
 </html>
