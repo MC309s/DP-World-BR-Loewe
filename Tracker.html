@@ -1,180 +1,184 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <title>Privates Besucher-Dashboard</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-    body {
-      background: #121212;
-      color: #eee;
-      font-family: "Segoe UI", Arial, sans-serif;
-      padding: 20px;
-    }
-    h1 { 
-      margin-bottom: 15px;
-      font-size: 2em;
-      text-align: center;
-      color: #f2a900;
-    }
-    h2 { 
-      margin-top: 30px;
-      font-size: 1.3em;
-      color: #00bfff;
-    }
-    .table-container {
-      margin-top: 10px;
-      width: 100%;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.85em;
-      margin-bottom: 15px;
-    }
-    th, td {
-      border: 1px solid #333;
-      padding: 4px 6px;
-      text-align: center;
-    }
-    th {
-      background: #1f1f1f;
-    }
-    .canvas-wrap {
-      margin-bottom: 40px;
-      max-width: 900px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    canvas {
-      width: 100% !important;
-      height: 300px !important;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>Besucher-Dashboard Kompakt</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  body {
+    background: #1e1e1e;
+    color: #eee;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+  }
+  h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2em;
+    color: #FFD700;
+  }
+  .dashboard {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .card {
+    background: #2a2a2a;
+    padding: 15px;
+    border-radius: 10px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  canvas {
+    max-width: 100%;
+    height: 250px;
+  }
+  .mini-list {
+    margin-top: 10px;
+    max-height: 120px;
+    overflow-y: auto;
+    width: 100%;
+    font-size: 0.8em;
+    border-top: 1px solid #444;
+    padding-top: 5px;
+  }
+  .mini-list div {
+    display: flex;
+    justify-content: space-between;
+    padding: 2px 0;
+  }
+  .page-title {
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 1.2em;
+    color: #FFD700;
+  }
+  /* Scrollbar styling */
+  .mini-list::-webkit-scrollbar {
+    width: 6px;
+  }
+  .mini-list::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 3px;
+  }
+</style>
 </head>
 <body>
-  <h1>📊 Besucher-Dashboard</h1>
-  <div id="dashboard"></div>
+<h1>📊 Besucher-Dashboard</h1>
+<div class="dashboard" id="dashboard"></div>
 
-  <script>
-    const NAMESPACE = "loewen-br";
-    const PAGES = ["index", "bewerber", "wahl-info"];
-    const DAYS_BACK = 30;
+<script>
+const NAMESPACE = "loewen-br";
+const PAGES = ["index", "bewerber", "wahl-info"];
+const DAYS_BACK = 30;
 
-    const colors = {
-      index: { border: "#f2a900", background: "rgba(242,169,0,0.2)" },
-      bewerber: { border: "#00bfff", background: "rgba(0,191,255,0.2)" },
-      "wahl-info": { border: "#7cfc00", background: "rgba(124,252,0,0.2)" }
-    };
+// Farben pro Seite
+const colors = {
+  index: { border: "#FFD700", background: "rgba(255,215,0,0.2)" },
+  bewerber: { border: "#00BFFF", background: "rgba(0,191,255,0.2)" },
+  "wahl-info": { border: "#32CD32", background: "rgba(50,205,50,0.2)" }
+};
 
-    function formatDate(offset) {
-      const d = new Date();
-      d.setDate(d.getDate() - offset);
-      return d.toISOString().slice(0, 10);
-    }
+function formatDate(offset) {
+  const d = new Date();
+  d.setDate(d.getDate() - offset);
+  return d.toISOString().slice(0, 10);
+}
 
-    async function trackVisit(page) {
-      const date = new Date().toISOString().slice(0, 10);
+// Besucher tracken
+async function trackVisit(page) {
+  const date = new Date().toISOString().slice(0, 10);
+  const key = `visit_${page}_${date}`;
+  try {
+    await fetch(`https://countapi.mileshilliard.com/hit/${NAMESPACE}/${key}`);
+  } catch (err) {
+    console.warn(`Fehler beim Tracken von ${key}:`, err);
+  }
+}
+
+async function loadDashboard() {
+  const container = document.getElementById("dashboard");
+
+  for (const page of PAGES) {
+    const labels = [];
+    const values = [];
+
+    // Daten abrufen
+    for (let i = DAYS_BACK - 1; i >= 0; i--) {
+      const date = formatDate(i);
       const key = `visit_${page}_${date}`;
+      let value = 0;
       try {
-        await fetch(`https://countapi.mileshilliard.com/hit/${NAMESPACE}/${key}`);
+        const res = await fetch(`https://countapi.mileshilliard.com/get/${NAMESPACE}/${key}`);
+        const data = await res.json();
+        value = data.value || 0;
       } catch (err) {
-        console.warn(`Fehler beim Tracken von ${key}:`, err);
+        console.warn(`Fehler beim Laden von ${key}:`, err);
       }
+      labels.push(date);
+      values.push(value);
     }
 
-    async function loadDashboard() {
-      const container = document.getElementById("dashboard");
+    // Card erstellen
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `<div class="page-title">${page.toUpperCase()}</div>`;
 
-      for (const page of PAGES) {
-        const labels = [];
-        const values = [];
+    // Canvas
+    const canvas = document.createElement("canvas");
+    card.appendChild(canvas);
 
-        let tableHtml = `<div class="table-container">
-          <h2>Seite: ${page}</h2>
-          <table>
-            <tr><th>Datum</th><th>Besucher</th></tr>`;
+    // Mini-Liste
+    const miniList = document.createElement("div");
+    miniList.className = "mini-list";
+    for (let i = 0; i < labels.length; i++) {
+      const row = document.createElement("div");
+      row.innerHTML = `<span>${labels[i]}</span><span>${values[i]}</span>`;
+      miniList.appendChild(row);
+    }
+    card.appendChild(miniList);
 
-        for (let i = DAYS_BACK - 1; i >= 0; i--) {
-          const date = formatDate(i);
-          const key = `visit_${page}_${date}`;
-          let value = 0;
+    container.appendChild(card);
 
-          try {
-            const res = await fetch(`https://countapi.mileshilliard.com/get/${NAMESPACE}/${key}`);
-            const data = await res.json();
-            value = data.value || 0;
-          } catch (err) {
-            console.warn(`Fehler beim Laden von ${key}:`, err);
-          }
-
-          labels.push(date);
-          values.push(value);
-          tableHtml += `<tr><td>${date}</td><td>${value}</td></tr>`;
+    // Chart erstellen
+    new Chart(canvas, {
+      type: "line",
+      data: {
+        labels,
+        datasets: [{
+          label: `Besucher – ${page}`,
+          data: values,
+          borderColor: colors[page].border,
+          backgroundColor: colors[page].background,
+          tension: 0.3,
+          fill: true,
+          pointRadius: 3
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false }
+        },
+        scales: {
+          x: { ticks: { color: "#ccc", maxRotation: 90, minRotation: 45 } },
+          y: { ticks: { color: "#ccc" }, beginAtZero: true, suggestedMax: Math.max(1, ...values) }
         }
-
-        tableHtml += "</table></div>";
-        container.innerHTML += tableHtml;
-
-        const canvasWrap = document.createElement("div");
-        canvasWrap.className = "canvas-wrap";
-        const canvas = document.createElement("canvas");
-        canvasWrap.appendChild(canvas);
-        container.appendChild(canvasWrap);
-
-        // Chart mit sanften Kurven und Punkten
-        const ctx = canvas.getContext('2d');
-        const gradient = ctx.createLinearGradient(0,0,0,300);
-        gradient.addColorStop(0, colors[page].background);
-        gradient.addColorStop(1, "rgba(0,0,0,0)");
-
-        new Chart(canvas, {
-          type: "line",
-          data: {
-            labels,
-            datasets: [{
-              label: `Besucher – ${page}`,
-              data: values,
-              borderColor: colors[page].border,
-              backgroundColor: gradient,
-              tension: 0.4,
-              fill: true,
-              pointRadius: 3,
-              pointHoverRadius: 6,
-              borderWidth: 2
-            }]
-          },
-          options: {
-            responsive: true,
-            plugins: {
-              legend: { labels: { color: "#eee" } },
-              tooltip: { mode: 'index', intersect: false }
-            },
-            scales: {
-              x: { 
-                ticks: { color: "#ccc", maxRotation: 45, minRotation: 45 },
-                grid: { color: "#333" }
-              },
-              y: {
-                ticks: { color: "#ccc" },
-                grid: { color: "#333" },
-                beginAtZero: true,
-                min: 0,
-                suggestedMax: Math.max(1, ...values)
-              }
-            }
-          }
-        });
       }
-    }
+    });
+  }
+}
 
-    // Aktuelle Seite tracken
-    const currentPage = window.location.pathname.includes("bewerber") ? "bewerber" :
-                        window.location.pathname.includes("wahl-info") ? "wahl-info" : "index";
-    trackVisit(currentPage);
+// Aktuelle Seite tracken
+const currentPage = window.location.pathname.includes("bewerber") ? "bewerber" :
+                    window.location.pathname.includes("wahl-info") ? "wahl-info" : "index";
+trackVisit(currentPage);
 
-    // Dashboard laden
-    loadDashboard();
-  </script>
+// Dashboard laden
+loadDashboard();
+</script>
 </body>
 </html>
