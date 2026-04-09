@@ -83,17 +83,17 @@ async function getValue(key){
   return 0;
 }
 
-// Initialisiere alle Keys der letzten 30 Tage auf 0
+// Initialisiere Keys der letzten 30 Tage auf 0
 async function initKeys(){
+  const promises = [];
   for(const page of PAGES){
     for(let i=DAYS_BACK-1;i>=0;i--){
       const date = formatDate(i);
       const key = `visit_${page}_${date}`;
-      try{
-        await fetch(`https://countapi.mileshilliard.com/api/v1/set/${key}?value=0`);
-      }catch(e){ console.warn(e); }
+      promises.push(fetch(`https://countapi.mileshilliard.com/api/v1/set/${key}?value=0`).catch(e=>console.warn(e)));
     }
   }
+  await Promise.all(promises);
 }
 
 // Dashboard initial laden
@@ -108,15 +108,15 @@ async function loadDashboard(){
     const canvas = document.createElement("canvas");
     box.appendChild(canvas);
 
-    const labels = [];
-    const values = [];
+    // Alle Werte parallel abrufen
+    const promises = [];
     for(let i=DAYS_BACK-1;i>=0;i--){
       const date = formatDate(i);
       const key = `visit_${page}_${date}`;
-      const value = await getValue(key);
-      labels.push(date);
-      values.push(value);
+      promises.push(getValue(key));
     }
+    const values = await Promise.all(promises);
+    const labels = Array.from({length:DAYS_BACK}, (_,i) => formatDate(DAYS_BACK-1-i));
 
     charts[page] = new Chart(canvas,{
       type:"line",
@@ -143,16 +143,16 @@ async function loadDashboard(){
   }
 }
 
-// Dashboard Daten aktualisieren
+// Dashboard Daten aktualisieren (parallel)
 async function updateDashboard(){
   for(const page of PAGES){
-    const values = [];
+    const promises = [];
     for(let i=DAYS_BACK-1;i>=0;i--){
       const date = formatDate(i);
       const key = `visit_${page}_${date}`;
-      const value = await getValue(key);
-      values.push(value);
+      promises.push(getValue(key));
     }
+    const values = await Promise.all(promises);
     charts[page].data.datasets[0].data = values;
     charts[page].update();
   }
