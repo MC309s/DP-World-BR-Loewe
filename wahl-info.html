@@ -11,19 +11,22 @@ body {
   color: #0A2540;
   margin: 0;
 }
+
+/* Sprachleiste */
 .lang-bar {
   background: #0A2540;
   padding: 8px 20px;
   display: flex;
   justify-content: flex-end;
-  gap: 8px;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 .lang-bar button {
   background: transparent;
   border: 1px solid rgba(255,255,255,0.3);
   color: #ccc;
   font-size: 12px;
-  padding: 4px 12px;
+  padding: 3px 10px;
   border-radius: 20px;
   cursor: pointer;
 }
@@ -32,16 +35,37 @@ body {
   color: #0A2540;
   font-weight: bold;
 }
+
+/* Orange Navigation */
+nav.main-nav {
+  background: #F2A900;
+  padding: 14px 20px;
+  text-align: center;
+}
+nav.main-nav a {
+  color: #0A2540;
+  margin: 0 12px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 15px;
+}
+nav.main-nav a:hover {
+  opacity: 0.6;
+}
+
+/* Header */
 header {
   background: #0A2540;
-  color: #fff;
-  padding: 40px 20px;
+  color: white;
+  padding: 50px 20px;
   text-align: center;
 }
 header h1 {
   margin: 0;
-  font-size: 36px;
+  font-size: 38px;
 }
+
+/* Content */
 main {
   max-width: 900px;
   margin: 40px auto;
@@ -62,6 +86,8 @@ p {
   padding: 16px;
   margin: 24px 0;
 }
+
+/* Footer */
 footer {
   background: #0A2540;
   color: rgba(255,255,255,0.7);
@@ -75,7 +101,7 @@ footer {
 
 <body>
 
-<!-- 🌍 Language Switch -->
+<!-- 🌍 Sprachleiste -->
 <div class="lang-bar">
   <button class="active" onclick="setLang('de')">🇩🇪 Deutsch</button>
   <button onclick="setLang('tr')">🇹🇷 Türkçe</button>
@@ -91,83 +117,55 @@ footer {
   <button onclick="setLang('fa')">🇮🇷 فارسی</button>
 </div>
 
+<!-- 🟧 Orange Navigation -->
+<nav class="main-nav">
+  index.html
+  bewerber.html
+  wahl-info.html
+</nav>
+
 <header>
   <h1 data-key="title">Information zur Betriebsratswahl</h1>
   <p>Löwen Liste 🦁</p>
 </header>
 
 <main>
+  <p><strong data-key="intro_hello">Liebe Kolleginnen und Kollegen,</strong></p>
+  <p data-key="intro_text"></p>
 
-<p><strong data-key="intro_hello">Liebe Kolleginnen und Kollegen,</strong></p>
+  <h2 data-key="section_posters"></h2>
+  <p data-key="posters_question"></p>
 
-<p data-key="intro_text">
-Wir möchten euch transparent darüber informieren, was aktuell rund um die
-Betriebsratswahl passiert – und wie wir bestimmte Entwicklungen bewerten.
-</p>
+  <div class="highlight">
+    <strong data-key="posters_answer"></strong>
+  </div>
 
-<h2 data-key="section_posters">Wahlplakate im Betrieb</h2>
+  <p data-key="reasons_intro"></p>
+  <ul>
+    <li data-key="reason1"></li>
+    <li data-key="reason2"></li>
+    <li data-key="reason3"></li>
+  </ul>
 
-<p data-key="posters_question">
-Wir haben den Wahlvorstand gefragt, an welchen Stellen im Betrieb Wahlplakate
-angebracht werden dürfen.
-</p>
+  <h2 data-key="section_view"></h2>
+  <p data-key="view_text1"></p>
+  <p data-key="view_text2"></p>
+  <p data-key="view_text3"></p>
 
-<div class="highlight">
-  <strong data-key="posters_answer">
-  Es wird empfohlen, vollständig auf Plakate und Aushänge im Betrieb zu verzichten.
-  </strong>
-</div>
+  <h2 data-key="section_status"></h2>
+  <ul>
+    <li data-key="status1"></li>
+    <li data-key="status2"></li>
+  </ul>
+  <p data-key="status_view"></p>
 
-<p data-key="reasons_intro">Begründet wurde dies unter anderem mit:</p>
-<ul>
-  <li data-key="reason1">unterschiedlichen technischen oder organisatorischen Möglichkeiten</li>
-  <li data-key="reason2">dem Wunsch nach Chancengleichheit</li>
-  <li data-key="reason3">der Vermeidung möglicher Wahlanfechtungen</li>
-</ul>
+  <h2 data-key="section_values"></h2>
+  <div class="highlight">
+    <strong data-key="values"></strong>
+  </div>
 
-<h2 data-key="section_view">Unsere Einschätzung</h2>
-
-<p data-key="view_text1">
-Wir bewerten diese Begründung kritisch. Ein generelles Plakatverbot schafft aus
-unserer Sicht keine echte Chancengleichheit.
-</p>
-
-<p data-key="view_text2">
-Wahlwerbung ist grundsätzlich erlaubt. Jede Liste kann private oder externe
-Möglichkeiten nutzen.
-</p>
-
-<p data-key="view_text3">
-Weniger Sichtbarkeit bedeutet weniger Information und schwächt die Transparenz
-der Wahl.
-</p>
-
-<h2 data-key="section_status">Aktueller Stand</h2>
-
-<ul>
-  <li data-key="status1">Jede Liste darf ein A4‑Plakat einreichen</li>
-  <li data-key="status2">Dieses wird zentral im Betrieb ausgehängt</li>
-</ul>
-
-<p data-key="status_view">
-Das ist ein Schritt in die richtige Richtung – jedoch keine vollständige
-Gleichbehandlung im Wahlkampf.
-</p>
-
-<h2 data-key="section_values">Unser Anspruch</h2>
-
-<div class="highlight">
-  <strong data-key="values">
-  Transparenz · Fairness · eine echte demokratische Wahl
-  </strong>
-</div>
-
-<p data-key="closing">
-Eine starke Wahl braucht nicht weniger, sondern mehr Information.
-</p>
-
-<p><strong data-key="signature">Eure Löwen Liste 🦁</strong></p>
-
+  <p data-key="closing"></p>
+  <p><strong data-key="signature"></strong></p>
 </main>
 
 <footer>
@@ -476,31 +474,27 @@ const translations = {
     signature: "لیست LÖWEN 🦁"
   }
 };
-
+/* === Sprachwechsel === */
 function setLang(lang) {
   const t = translations[lang] || translations.de;
+
   document.querySelectorAll("[data-key]").forEach(el => {
-    const key = el.getAttribute("data-key");
-    if (t[key]) el.textContent = t[key];
+    const k = el.getAttribute("data-key");
+    if (t[k]) el.textContent = t[k];
   });
-  document.querySelectorAll(".lang-bar button").forEach(btn => btn.classList.remove("active"));
-  event.target.classList.add("active");
+
+  document.querySelectorAll(".lang-bar button")
+    .forEach(b => b.classList.remove("active"));
+
+  const btn = document.querySelector(`.lang-bar button[onclick="setLang('${lang}')"]`);
+  if (btn) btn.classList.add("active");
+
   document.documentElement.lang = lang;
   document.documentElement.dir = ["ar","fa"].includes(lang) ? "rtl" : "ltr";
 }
 </script>
 
-function setLang(lang) {
-  const t = translations[lang] || translations.de;
-  document.querySelectorAll("[data-key]").forEach(el => {
-    const key = el.getAttribute("data-key");
-    if (t[key]) el.textContent = t[key];
-  });
-  document.querySelectorAll(".lang-bar button").forEach(btn => btn.classList.remove("active"));
-  event.target.classList.add("active");
-  document.documentElement.lang = lang;
-}
-</script>
-
 </body>
 </html>
+
+
