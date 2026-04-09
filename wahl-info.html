@@ -79,7 +79,16 @@ footer {
 <div class="lang-bar">
   <button class="active" onclick="setLang('de')">🇩🇪 Deutsch</button>
   <button onclick="setLang('tr')">🇹🇷 Türkçe</button>
+  <button onclick="setLang('ru')">🇷🇺 Русский</button>
   <button onclick="setLang('en')">🇬🇧 English</button>
+  <button onclick="setLang('uk')">🇺🇦 Українська</button>
+  <button onclick="setLang('ro')">🇷🇴 Română</button>
+  <button onclick="setLang('pl')">🇵🇱 Polski</button>
+  <button onclick="setLang('ar')">🇸🇦 العربية</button>
+  <button onclick="setLang('hr')">🇭🇷 Hrvatski</button>
+  <button onclick="setLang('bs')">🇧🇦 Bosanski</button>
+  <button onclick="setLang('sr')">🇷🇸 Srpski</button>
+  <button onclick="setLang('fa')">🇮🇷 فارسی</button>
 </div>
 
 <header>
@@ -205,7 +214,7 @@ const translations = {
     reason3: "itiraz riskinin azaltılması",
     section_view: "Bizim Değerlendirmemiz",
     view_text1: "Bu gerekçeyi eleştirel değerlendiriyoruz. Genel bir afiş yasağı gerçek eşitlik sağlamaz.",
-    view_text2: "Seçim çalışması temelde serbesttir. Her liste özel imkânları kullanabilir.",
+    view_text2: "Seçim çalışması temelde serbesttir.",
     view_text3: "Daha az görünürlük, daha az bilgi demektir.",
     section_status: "Mevcut Durum",
     status1: "Her liste bir A4 afiş sunabilir",
@@ -217,31 +226,269 @@ const translations = {
     signature: "Löwen Listesi 🦁"
   },
 
+  ru: {
+    title: "Информация о выборах производственного совета",
+    intro_hello: "Дорогие коллеги,",
+    intro_text: "Мы хотим прозрачно проинформировать вас о текущих событиях, связанных с выборами.",
+    section_posters: "Агитационные плакаты",
+    posters_question: "Мы спросили, где можно размещать плакаты в предприятии.",
+    posters_answer: "Рекомендовано полностью отказаться от плакатов.",
+    reasons_intro: "Это было обосновано:",
+    reason1: "разными возможностями списков",
+    reason2: "стремлением к равенству",
+    reason3: "избежанием оспаривания выборов",
+    section_view: "Наша оценка",
+    view_text1: "Мы считаем это решение критически.",
+    view_text2: "Агитация в целом разрешена.",
+    view_text3: "Меньше информации – меньше прозрачности.",
+    section_status: "Текущий статус",
+    status1: "Каждый список может подать один плакат A4",
+    status2: "Он размещается централизованно",
+    status_view: "Это шаг вперёд, но не полное равенство.",
+    section_values: "Наши принципы",
+    values: "Прозрачность · Справедливость · Демократия",
+    closing: "Сильные выборы требуют информации.",
+    signature: "Список LÖWEN 🦁"
+  },
+
   en: {
     title: "Information on the Works Council Election",
     intro_hello: "Dear colleagues,",
     intro_text: "We want to transparently inform you about current developments regarding the works council election.",
     section_posters: "Posters at the Workplace",
-    posters_question: "We asked where election posters may be placed in the workplace.",
-    posters_answer: "It was recommended to avoid posters and notices entirely.",
+    posters_question: "We asked where election posters may be placed.",
+    posters_answer: "It was recommended to avoid posters entirely.",
     reasons_intro: "This was justified by:",
-    reason1: "unequal organisational or technical possibilities",
+    reason1: "unequal organisational possibilities",
     reason2: "ensuring equal opportunities",
-    reason3: "avoiding potential election challenges",
+    reason3: "avoiding election challenges",
     section_view: "Our Assessment",
-    view_text1: "We view this reasoning critically. A blanket ban does not create real equality.",
+    view_text1: "We view this critically.",
     view_text2: "Election campaigning is generally allowed.",
-    view_text3: "Less visibility means less information.",
+    view_text3: "Less visibility means less transparency.",
     section_status: "Current Status",
     status1: "Each list may submit one A4 poster",
     status2: "It will be displayed centrally",
-    status_view: "This is a step forward, but not full equality.",
+    status_view: "A step forward, but not full equality.",
     section_values: "Our Values",
-    values: "Transparency · Fairness · Real Democracy",
-    closing: "Strong elections need more information, not less.",
+    values: "Transparency · Fairness · Democracy",
+    closing: "Strong elections need information.",
     signature: "Löwen List 🦁"
+  },
+
+  uk: {
+    title: "Інформація щодо виборів ради",
+    intro_hello: "Шановні колеги,",
+    intro_text: "Ми хочемо прозоро поінформувати вас про перебіг виборів.",
+    section_posters: "Плакати",
+    posters_question: "Ми запитали, де дозволено розміщувати плакати.",
+    posters_answer: "Рекомендовано відмовитись від плакатів.",
+    reasons_intro: "Причини:",
+    reason1: "різні можливості списків",
+    reason2: "рівність шансів",
+    reason3: "уникнення оскаржень",
+    section_view: "Наша позиція",
+    view_text1: "Ми оцінюємо це критично.",
+    view_text2: "Агітація загалом дозволена.",
+    view_text3: "Менше інформації – менше прозорості.",
+    section_status: "Поточний стан",
+    status1: "Кожен список може подати плакат A4",
+    status2: "Він розміщується централізовано",
+    status_view: "Це крок вперед, але не рівність.",
+    section_values: "Наші цінності",
+    values: "Прозорість · Справедливість · Демократія",
+    closing: "Сильні вибори потребують інформації.",
+    signature: "Список LÖWEN 🦁"
+  },
+
+  ro: {
+    title: "Informații privind alegerile",
+    intro_hello: "Dragi colegi,",
+    intro_text: "Dorim să vă informăm transparent despre alegeri.",
+    section_posters: "Afișe",
+    posters_question: "Am întrebat unde pot fi afișate posterele.",
+    posters_answer: "S-a recomandat renunțarea la afișe.",
+    reasons_intro: "Motivele:",
+    reason1: "posibilități diferite",
+    reason2: "egalitate de șanse",
+    reason3: "evitarea contestațiilor",
+    section_view: "Evaluarea noastră",
+    view_text1: "Considerăm această decizie critic.",
+    view_text2: "Campania este permisă.",
+    view_text3: "Mai puțină vizibilitate înseamnă mai puțină transparență.",
+    section_status: "Situația actuală",
+    status1: "Fiecare listă poate depune un afiș A4",
+    status2: "Afișul este expus central",
+    status_view: "Este un pas înainte, dar nu egalitate completă.",
+    section_values: "Valorile noastre",
+    values: "Transparență · Corectitudine · Democrație",
+    closing: "Alegeri puternice necesită informare.",
+    signature: "Lista LÖWEN 🦁"
+  },
+
+  pl: {
+    title: "Informacja o wyborach rady zakładowej",
+    intro_hello: "Drodzy koledzy i koleżanki,",
+    intro_text: "Chcemy transparentnie poinformować o wyborach.",
+    section_posters: "Plakaty wyborcze",
+    posters_question: "Zapytaliśmy, gdzie można rozwieszać plakaty.",
+    posters_answer: "Zalecano rezygnację z plakatów.",
+    reasons_intro: "Uzasadnienie:",
+    reason1: "różne możliwości list",
+    reason2: "równość szans",
+    reason3: "uniknięcie odwołań",
+    section_view: "Nasza ocena",
+    view_text1: "Oceniamy to krytycznie.",
+    view_text2: "Kampania wyborcza jest dozwolona.",
+    view_text3: "Mniej informacji to mniej przejrzystości.",
+    section_status: "Aktualny stan",
+    status1: "Każda lista może złożyć plakat A4",
+    status2: "Plakat wieszany centralnie",
+    status_view: "Krok naprzód, ale brak pełnej równości.",
+    section_values: "Nasze wartości",
+    values: "Przejrzystość · Sprawiedliwość · Demokracja",
+    closing: "Silne wybory wymagają informacji.",
+    signature: "Lista LÖWEN 🦁"
+  },
+
+  ar: {
+    title: "معلومات حول انتخابات مجلس العمال",
+    intro_hello: "الزملاء الأعزاء،",
+    intro_text: "نود إطلاعكم بشفافية على تطورات الانتخابات.",
+    section_posters: "الملصقات",
+    posters_question: "سألنا عن أماكن وضع الملصقات.",
+    posters_answer: "تمت التوصية بعدم استخدام الملصقات.",
+    reasons_intro: "الأسباب:",
+    reason1: "اختلاف الإمكانيات",
+    reason2: "تحقيق تكافؤ الفرص",
+    reason3: "تجنب الطعون",
+    section_view: "تقييمنا",
+    view_text1: "نقيم هذا القرار بشكل نقدي.",
+    view_text2: "الدعاية الانتخابية مسموحة.",
+    view_text3: "قلة المعلومات تعني قلة الشفافية.",
+    section_status: "الوضع الحالي",
+    status1: "يُسمح بكل قائمة بملصق A4",
+    status2: "يتم عرضه بشكل مركزي",
+    status_view: "خطوة للأمام لكنها ليست مساواة كاملة.",
+    section_values: "قيمنا",
+    values: "الشفافية · العدالة · الديمقراطية",
+    closing: "الانتخابات القوية تحتاج معلومات.",
+    signature: "قائمة LÖWEN 🦁"
+  },
+
+  hr: {
+    title: "Informacije o izborima",
+    intro_hello: "Drage kolegice i kolege,",
+    intro_text: "Želimo vas transparentno informirati o izborima.",
+    section_posters: "Plakati",
+    posters_question: "Pitali smo gdje se smiju postaviti plakati.",
+    posters_answer: "Preporučeno je izbjegavanje plakata.",
+    reasons_intro: "Razlozi:",
+    reason1: "različite mogućnosti",
+    reason2: "jednake šanse",
+    reason3: "izbjegavanje žalbi",
+    section_view: "Naša procjena",
+    view_text1: "Odluku ocjenjujemo kritično.",
+    view_text2: "Izborna kampanja je dopuštena.",
+    view_text3: "Manje informacija znači manje transparentnosti.",
+    section_status: "Trenutno stanje",
+    status1: "Svaka lista može predati plakat A4",
+    status2: "Plakat se centralno izlaže",
+    status_view: "Korak naprijed, ali ne potpuna jednakost.",
+    section_values: "Naše vrijednosti",
+    values: "Transparentnost · Pravednost · Demokracija",
+    closing: "Jaki izbori zahtijevaju informacije.",
+    signature: "Lista LÖWEN 🦁"
+  },
+
+  bs: {
+    title: "Informacije o izborima",
+    intro_hello: "Drage kolegice i kolege,",
+    intro_text: "Želimo vas transparentno informisati o izborima.",
+    section_posters: "Plakati",
+    posters_question: "Pitali smo gdje se mogu postaviti plakati.",
+    posters_answer: "Preporučeno je izbjegavanje plakata.",
+    reasons_intro: "Razlozi:",
+    reason1: "različite mogućnosti",
+    reason2: "jednake šanse",
+    reason3: "izbjegavanje žalbi",
+    section_view: "Naša procjena",
+    view_text1: "Odluku smatramo kritičnom.",
+    view_text2: "Izborna kampanja je dozvoljena.",
+    view_text3: "Manje informacija znači manje transparentnosti.",
+    section_status: "Trenutno stanje",
+    status1: "Svaka lista može predati A4 plakat",
+    status2: "Centralno izlaganje",
+    status_view: "Korak naprijed, ali ne potpuna jednakost.",
+    section_values: "Naše vrijednosti",
+    values: "Transparentnost · Pravednost · Demokratija",
+    closing: "Jaki izbori traže informacije.",
+    signature: "Lista LÖWEN 🦁"
+  },
+
+  sr: {
+    title: "Информације о изборима",
+    intro_hello: "Драге колегинице и колеге,",
+    intro_text: "Желимо вас транспарентно информисати о изборима.",
+    section_posters: "Плакати",
+    posters_question: "Питали смо где се могу поставити плакати.",
+    posters_answer: "Препоручено је избегавање плаката.",
+    reasons_intro: "Разлози:",
+    reason1: "различите могућности",
+    reason2: "једнаке шансе",
+    reason3: "избегавање жалби",
+    section_view: "Наша оцена",
+    view_text1: "Ово оцењујемо критично.",
+    view_text2: "Кампања је дозвољена.",
+    view_text3: "Мање информација значи мање транспарентности.",
+    section_status: "Тренутно стање",
+    status1: "Свака листа може предати А4 плакат",
+    status2: "Централно истицање",
+    status_view: "Корак напред, али не пуна једнакост.",
+    section_values: "Наше вредности",
+    values: "Транспарентност · Правда · Демократија",
+    closing: "Јаки избори захтевају информације.",
+    signature: "Листа LÖWEN 🦁"
+  },
+
+  fa: {
+    title: "اطلاعات درباره انتخابات شورای کار",
+    intro_hello: "همکاران عزیز،",
+    intro_text: "می‌خواهیم شما را به‌طور شفاف از روند انتخابات مطلع کنیم.",
+    section_posters: "پوسترها",
+    posters_question: "پرسیدیم پوسترها کجا می‌توانند نصب شوند.",
+    posters_answer: "توصیه شد از پوسترها صرف‌نظر شود.",
+    reasons_intro: "دلایل:",
+    reason1: "تفاوت امکانات",
+    reason2: "برابری فرصت‌ها",
+    reason3: "جلوگیری از اعتراض",
+    section_view: "ارزیابی ما",
+    view_text1: "این تصمیم را انتقادی می‌دانیم.",
+    view_text2: "تبلیغات انتخاباتی مجاز است.",
+    view_text3: "اطلاعات کمتر یعنی شفافیت کمتر.",
+    section_status: "وضعیت فعلی",
+    status1: "هر لیست می‌تواند پوستر A4 ارائه دهد",
+    status2: "به صورت مرکزی نصب می‌شود",
+    status_view: "گامی رو به جلو اما نه برابری کامل.",
+    section_values: "ارزش‌های ما",
+    values: "شفافیت · عدالت · دموکراسی",
+    closing: "انتخابات قوی نیازمند اطلاعات است.",
+    signature: "لیست LÖWEN 🦁"
   }
 };
+
+function setLang(lang) {
+  const t = translations[lang] || translations.de;
+  document.querySelectorAll("[data-key]").forEach(el => {
+    const key = el.getAttribute("data-key");
+    if (t[key]) el.textContent = t[key];
+  });
+  document.querySelectorAll(".lang-bar button").forEach(btn => btn.classList.remove("active"));
+  event.target.classList.add("active");
+  document.documentElement.lang = lang;
+  document.documentElement.dir = ["ar","fa"].includes(lang) ? "rtl" : "ltr";
+}
+</script>
 
 function setLang(lang) {
   const t = translations[lang] || translations.de;
