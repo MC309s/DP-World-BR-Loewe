@@ -442,16 +442,11 @@ function setLang(code) {
 </script>
 
 <script>
-(function () {
-  const NAMESPACE = "loewen-br";
-  const PAGE = "bewerber";
+const API = "https://countapi.mileshilliard.com/api/v1";
+const page = "bewerber";
+const today = new Date().toISOString().slice(0,10);
 
-  const today = new Date().toISOString().slice(0, 10);
-  const KEY = `visit_${PAGE}_${today}`;
-
-    fetch(`https://countapi.mileshilliard.com/hit/${NAMESPACE}/${key}`)
-    .catch(() => {});
-})();
+fetch(`${API}/hit/visit_${page}_${today}`).catch(()=>{});
 </script>
 
 </body>
